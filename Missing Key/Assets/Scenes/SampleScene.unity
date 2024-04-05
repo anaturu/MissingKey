@@ -243,6 +243,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   code: 
   keyStatus: 0
+  adjacentKeyDatas: []
 --- !u!1 &59556569
 GameObject:
   m_ObjectHideFlags: 0
@@ -363,6 +364,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   code: 
   keyStatus: 0
+  adjacentKeyDatas: []
 --- !u!1 &93736932
 GameObject:
   m_ObjectHideFlags: 0
@@ -483,6 +485,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   code: 
   keyStatus: 0
+  adjacentKeyDatas: []
 --- !u!1 &153487306
 GameObject:
   m_ObjectHideFlags: 0
@@ -603,6 +606,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   code: 
   keyStatus: 0
+  adjacentKeyDatas: []
 --- !u!1 &179462753
 GameObject:
   m_ObjectHideFlags: 0
@@ -723,6 +727,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   code: 
   keyStatus: 0
+  adjacentKeyDatas: []
 --- !u!1 &305344961
 GameObject:
   m_ObjectHideFlags: 0
@@ -843,6 +848,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   code: 
   keyStatus: 0
+  adjacentKeyDatas: []
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -929,8 +935,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.00015216494, y: 0.8587875, z: -0.512332, w: 0.00025372853}
+  m_LocalPosition: {x: -4.554902, y: 10.674629, z: 5.689573}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1218,6 +1224,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   code: 
   keyStatus: 0
+  adjacentKeyDatas: []
 --- !u!1 &498877198
 GameObject:
   m_ObjectHideFlags: 0
@@ -1289,6 +1296,7 @@ MonoBehaviour:
   - {fileID: 743002064}
   - {fileID: 1153769680}
   - {fileID: 1224675163}
+  travelSpeed: 0.2
 --- !u!1 &551339260
 GameObject:
   m_ObjectHideFlags: 0
@@ -1409,6 +1417,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   code: 
   keyStatus: 1
+  adjacentKeyDatas:
+  - {fileID: 1562799948}
+  - {fileID: 1886369057}
 --- !u!1 &593752362
 GameObject:
   m_ObjectHideFlags: 0
@@ -1529,6 +1540,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   code: 
   keyStatus: 0
+  adjacentKeyDatas: []
 --- !u!1 &716896168
 GameObject:
   m_ObjectHideFlags: 0
@@ -1649,6 +1661,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   code: 
   keyStatus: 0
+  adjacentKeyDatas: []
 --- !u!1 &743002059
 GameObject:
   m_ObjectHideFlags: 0
@@ -1769,6 +1782,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   code: 
   keyStatus: 0
+  adjacentKeyDatas: []
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1938,6 +1952,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   code: 
   keyStatus: 0
+  adjacentKeyDatas: []
 --- !u!1 &867825729
 GameObject:
   m_ObjectHideFlags: 0
@@ -2058,6 +2073,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   code: 
   keyStatus: 0
+  adjacentKeyDatas: []
 --- !u!1 &1153769675
 GameObject:
   m_ObjectHideFlags: 0
@@ -2178,6 +2194,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   code: 
   keyStatus: 0
+  adjacentKeyDatas: []
 --- !u!1 &1224675158
 GameObject:
   m_ObjectHideFlags: 0
@@ -2298,6 +2315,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   code: 
   keyStatus: 0
+  adjacentKeyDatas: []
 --- !u!1 &1238295692
 GameObject:
   m_ObjectHideFlags: 0
@@ -2459,6 +2477,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   code: 
   keyStatus: 2
+  adjacentKeyDatas: []
 --- !u!1 &1578587525
 GameObject:
   m_ObjectHideFlags: 0
@@ -2579,6 +2598,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   code: 
   keyStatus: 0
+  adjacentKeyDatas: []
 --- !u!1 &1597954515
 GameObject:
   m_ObjectHideFlags: 0
@@ -2699,6 +2719,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   code: 
   keyStatus: 0
+  adjacentKeyDatas: []
 --- !u!1 &1646455414
 GameObject:
   m_ObjectHideFlags: 0
@@ -2819,6 +2840,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   code: 
   keyStatus: 0
+  adjacentKeyDatas: []
 --- !u!1 &1656339049
 GameObject:
   m_ObjectHideFlags: 0
@@ -2976,6 +2998,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   code: 
   keyStatus: 0
+  adjacentKeyDatas: []
 --- !u!1 &1690434980
 GameObject:
   m_ObjectHideFlags: 0
@@ -3096,6 +3119,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   code: 
   keyStatus: 0
+  adjacentKeyDatas:
+  - {fileID: 493122196}
+  - {fileID: 179462758}
+  - {fileID: 1153769680}
+  - {fileID: 1224675163}
+  - {fileID: 305344966}
+  - {fileID: 593752367}
 --- !u!1 &1775723309
 GameObject:
   m_ObjectHideFlags: 0
@@ -3216,6 +3246,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   code: 
   keyStatus: 0
+  adjacentKeyDatas: []
 --- !u!1 &1779663593
 GameObject:
   m_ObjectHideFlags: 0
@@ -3336,6 +3367,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   code: 
   keyStatus: 0
+  adjacentKeyDatas: []
 --- !u!1 &1846150775
 GameObject:
   m_ObjectHideFlags: 0
@@ -3456,6 +3488,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   code: 
   keyStatus: 0
+  adjacentKeyDatas: []
 --- !u!1 &1886369052
 GameObject:
   m_ObjectHideFlags: 0
@@ -3576,6 +3609,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   code: 
   keyStatus: 0
+  adjacentKeyDatas: []
 --- !u!1 &1930643654
 GameObject:
   m_ObjectHideFlags: 0
@@ -3737,6 +3771,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   code: 
   keyStatus: 0
+  adjacentKeyDatas: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
