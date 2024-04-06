@@ -8,11 +8,14 @@ using DG.Tweening;
 
 public class KeyManager : MonoBehaviour
 {
-    [Header("DO NOT TOUCH")]
+    //DONT TOUCH THESE
     [SerializeField] private KeyData[] _keyDatas; //Array du script "KeyData"
     private readonly Array keyCodes = Enum.GetValues(typeof(KeyCode)); //Array contenant TOUTES les touches du clavier
 
+    
     [SerializeField] private float travelSpeed;
+    [SerializeField] private Color keyColor;
+    [SerializeField] private Color adjacentKeyColor;
 
     public void Update()
     {
@@ -20,27 +23,28 @@ public class KeyManager : MonoBehaviour
         {
             KeyData currentKey = ReturnKeyDataFromInput(FindLastPressedInput());
 
-            #region AllKeys
-            
-            //DO CODE pour n'importe quelle touche
+            //ADJACENT KEYS
             for (int i = 0; i < currentKey.adjacentKeyDatas.Length; i++) // i = int qui représente chaque touche du clavier adjacente à la currentKey une par une 
             {
-                currentKey.adjacentKeyDatas[i].transform.DOMove(currentKey.adjacentKeyDatas[i].keyPos + new Vector3(0, 1, 0), travelSpeed);
+                currentKey.adjacentKeyDatas[i].gameObject.GetComponent<MeshRenderer>().material.DOColor(adjacentKeyColor, 0.2f);
+
             }
-            
-            #endregion
-           
-            
+
+            //KEY PRESSED ONLY
+            for (int i = 0; i < keyCodes.Length; i++)
+            {
+                currentKey.transform.DOMove(currentKey.keyPos + new Vector3(0, 0.4f, 0), travelSpeed);
+            }
+
+
             switch(currentKey.keyStatus) //DO CODE pour les touches spécifiques
             {
                 case KeyData.KeyStatus.Basic:
-                    
                     break;
                 case KeyData.KeyStatus.Mine:
                     currentKey.Explode();
                     break;
                 case KeyData.KeyStatus.Hole:
-                    
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -50,13 +54,17 @@ public class KeyManager : MonoBehaviour
         if (Input.GetKeyUp(FindLastReleasedInput()))
         {
             KeyData currentKey = ReturnKeyDataFromInput(FindLastReleasedInput());
-            
-            Debug.Log("OAJUFOLIAEPIHJAEFP");
-            //DO CODE pour n'importe quelle touche
-            
+
+            //ADJACENT KEYS
             for (int i = 0; i < currentKey.adjacentKeyDatas.Length; i++) // i = int qui représente chaque touche du clavier adjacente à la currentKey une par une 
             {
-                currentKey.adjacentKeyDatas[i].transform.DOMove(currentKey.adjacentKeyDatas[i].keyPos, travelSpeed);
+                currentKey.adjacentKeyDatas[i].gameObject.GetComponent<MeshRenderer>().material.DOColor(keyColor, 0.2f);
+            }
+            
+            //KEY RELEASED ONLY
+            for (int i = 0; i < keyCodes.Length; i++)
+            {
+                currentKey.transform.DOMove(currentKey.keyPos, travelSpeed);
             }
             
             switch(currentKey.keyStatus) //DO CODE pour les touches spécifiques
@@ -68,7 +76,7 @@ public class KeyManager : MonoBehaviour
                     currentKey.Explode();
                     break;
                 case KeyData.KeyStatus.Hole:
-                    
+                    Debug.Log("OAJUFOLIAEPIHJAEFP");
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -91,7 +99,6 @@ public class KeyManager : MonoBehaviour
 
         return value;
     }
-
     KeyCode FindLastPressedInput() //Correspond au dernier Input pressé
     {
         KeyCode value = new KeyCode();
