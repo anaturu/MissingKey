@@ -10,7 +10,9 @@ public class KeyData : MonoBehaviour
     
     public KeyStatus keyStatus; //Variable contenant l'enum "KeyStatus"
     public KeyData[] adjacentKeyDatas; //Contient  toute les touches adjacentes à la touche
-    public Vector3 keyPos;
+    [HideInInspector] public Vector3 keyPos;
+    public bool isPressed;
+    public bool isPressedAdjacent;
 
     public enum KeyStatus //Tous les states spéciaux des touches spéciales
     {
@@ -19,10 +21,13 @@ public class KeyData : MonoBehaviour
         Hole
     }
 
+
     private void Start()
     {
         code = gameObject.name;
         keyPos = transform.position;
+        isPressed = false;
+        isPressedAdjacent = false;
     }
 
     public void Explode()

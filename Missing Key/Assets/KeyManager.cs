@@ -12,32 +12,38 @@ public class KeyManager : MonoBehaviour
     [SerializeField] private KeyData[] _keyDatas; //Array du script "KeyData"
     private readonly Array keyCodes = Enum.GetValues(typeof(KeyCode)); //Array contenant TOUTES les touches du clavier
 
-    
     [SerializeField] private float travelSpeed;
     [SerializeField] private Color keyColor;
     [SerializeField] private Color adjacentKeyColor;
+
 
     public void Update()
     {
         if (Input.GetKeyDown(FindLastPressedInput())) //Si je press n'importe quel touche du clavier
         {
             KeyData currentKey = ReturnKeyDataFromInput(FindLastPressedInput());
-
-            //ADJACENT KEYS
-            for (int i = 0; i < currentKey.adjacentKeyDatas.Length; i++) // i = int qui représente chaque touche du clavier adjacente à la currentKey une par une 
-            {
-                currentKey.adjacentKeyDatas[i].gameObject.GetComponent<MeshRenderer>().material.DOColor(adjacentKeyColor, 0.2f);
-
-            }
-
-            //KEY PRESSED ONLY
+            
+            //FOR THE SINGLE KEY PRESSED
             for (int i = 0; i < keyCodes.Length; i++)
             {
+                currentKey.isPressed = true;
                 currentKey.transform.DOMove(currentKey.keyPos + new Vector3(0, 0.4f, 0), travelSpeed);
+                currentKey.gameObject.GetComponent<MeshRenderer>().material.DOColor(keyColor, 0.2f);
+            }
+            
+            
+            //FOR EVERY ADJACENT KEYS PRESSED
+            for (int i = 0; i < currentKey.adjacentKeyDatas.Length; i++) // i = int qui représente chaque touche du clavier adjacente à la currentKey une par une 
+            {
+                currentKey.adjacentKeyDatas[i].isPressedAdjacent = true;
+                currentKey.adjacentKeyDatas[i].gameObject.GetComponent<MeshRenderer>().material.DOColor(adjacentKeyColor, 0.2f);
+
+                Debug.Log("Adjacent keys are being pushed down");
             }
 
-
-            switch(currentKey.keyStatus) //DO CODE pour les touches spécifiques
+            #region Special Keys
+            
+            switch(currentKey.keyStatus)
             {
                 case KeyData.KeyStatus.Basic:
                     break;
@@ -49,25 +55,32 @@ public class KeyManager : MonoBehaviour
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+            
+            #endregion
+
         }
 
         if (Input.GetKeyUp(FindLastReleasedInput()))
         {
             KeyData currentKey = ReturnKeyDataFromInput(FindLastReleasedInput());
-
-            //ADJACENT KEYS
-            for (int i = 0; i < currentKey.adjacentKeyDatas.Length; i++) // i = int qui représente chaque touche du clavier adjacente à la currentKey une par une 
-            {
-                currentKey.adjacentKeyDatas[i].gameObject.GetComponent<MeshRenderer>().material.DOColor(keyColor, 0.2f);
-            }
             
-            //KEY RELEASED ONLY
+            //FOR THE SINGLE KEY RELEASED
             for (int i = 0; i < keyCodes.Length; i++)
             {
+                currentKey.isPressed = false;
                 currentKey.transform.DOMove(currentKey.keyPos, travelSpeed);
             }
             
-            switch(currentKey.keyStatus) //DO CODE pour les touches spécifiques
+            //FOR EVERY ADJACENT KEYS RELEASED
+            for (int i = 0; i < currentKey.adjacentKeyDatas.Length; i++) // i = int qui représente chaque touche du clavier adjacente à la currentKey une par une 
+            {
+                currentKey.adjacentKeyDatas[i].isPressedAdjacent = false;
+                currentKey.adjacentKeyDatas[i].gameObject.GetComponent<MeshRenderer>().material.DOColor(keyColor, 0.2f);
+            }
+            
+            #region Special Keys
+
+            switch(currentKey.keyStatus)
             {
                 case KeyData.KeyStatus.Basic:
                     
@@ -81,6 +94,10 @@ public class KeyManager : MonoBehaviour
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+
+            #endregion
+            
+            
         }
     }
 
