@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 public class KeyManager : MonoBehaviour
 {
@@ -15,13 +16,49 @@ public class KeyManager : MonoBehaviour
     [SerializeField] private float travelSpeed;
     [SerializeField] private Color keyColor;
     [SerializeField] private Color adjacentKeyColor;
+    
+    [SerializeField] private List<GameObject> keyList = new List<GameObject>();
+    
+    [SerializeField] private bool canPlayLevel;
 
+    private void Start()
+    {
+        canPlayLevel = false;
+
+    }
 
     public void Update()
+    {
+        PressKeyBehavior();
+        ReleaseKeyBehavior();
+
+        if (keyList.Count > 2)
+        {
+            //SceneManager.LoadScene("SampleScene");
+            Debug.Log("More than 2 keys : GAME OVER");
+        }
+
+        if (keyList.Count == 0 && canPlayLevel)
+        {
+            //SceneManager.LoadScene("SampleScene");
+            Debug.Log("0 keys held down : GAME OVER");
+        }
+        
+        if (keyList.Count == 1 && !canPlayLevel)
+        {
+            //SceneManager.LoadScene("SampleScene");
+            Debug.Log("Wrong starting key pressed : GAME OVER");
+        }
+        
+    }
+
+    private void PressKeyBehavior()
     {
         if (Input.GetKeyDown(FindLastPressedInput())) //Si je press n'importe quel touche du clavier
         {
             KeyData currentKey = ReturnKeyDataFromInput(FindLastPressedInput());
+
+            
             
             //FOR THE SINGLE KEY PRESSED
             for (int i = 0; i < keyCodes.Length; i++)
@@ -30,7 +67,6 @@ public class KeyManager : MonoBehaviour
                 currentKey.transform.DOMove(currentKey.keyPos + new Vector3(0, 0.4f, 0), travelSpeed);
                 currentKey.gameObject.GetComponent<MeshRenderer>().material.DOColor(keyColor, 0.2f);
             }
-            
             
             //FOR EVERY ADJACENT KEYS PRESSED
             for (int i = 0; i < currentKey.adjacentKeyDatas.Length; i++) // i = int qui représente chaque touche du clavier adjacente à la currentKey une par une 
@@ -46,9 +82,16 @@ public class KeyManager : MonoBehaviour
             switch(currentKey.keyStatus)
             {
                 case KeyData.KeyStatus.Basic:
+                    keyList.Add(currentKey.gameObject);
+                    break;
+                case KeyData.KeyStatus.Start:
+                    canPlayLevel = true;
+                    keyList.Add(currentKey.gameObject);
+
+                    Debug.Log("AZEAZEAZE");
+
                     break;
                 case KeyData.KeyStatus.Mine:
-                    currentKey.Explode();
                     break;
                 case KeyData.KeyStatus.Hole:
                     break;
@@ -59,16 +102,19 @@ public class KeyManager : MonoBehaviour
             #endregion
 
         }
-
+    }
+    private void ReleaseKeyBehavior()
+    {
         if (Input.GetKeyUp(FindLastReleasedInput()))
         {
             KeyData currentKey = ReturnKeyDataFromInput(FindLastReleasedInput());
-            
+
             //FOR THE SINGLE KEY RELEASED
             for (int i = 0; i < keyCodes.Length; i++)
             {
                 currentKey.isPressed = false;
                 currentKey.transform.DOMove(currentKey.keyPos, travelSpeed);
+                
             }
             
             //FOR EVERY ADJACENT KEYS RELEASED
@@ -83,13 +129,15 @@ public class KeyManager : MonoBehaviour
             switch(currentKey.keyStatus)
             {
                 case KeyData.KeyStatus.Basic:
-                    
+                    keyList.Remove(currentKey.gameObject);
+                    break;
+                case KeyData.KeyStatus.Start:
+                    keyList.Remove(currentKey.gameObject);
+
                     break;
                 case KeyData.KeyStatus.Mine:
-                    currentKey.Explode();
                     break;
                 case KeyData.KeyStatus.Hole:
-                    Debug.Log("OAJUFOLIAEPIHJAEFP");
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

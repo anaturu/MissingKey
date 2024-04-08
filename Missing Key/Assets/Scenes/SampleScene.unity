@@ -251,6 +251,8 @@ MonoBehaviour:
   - {fileID: 867825734}
   - {fileID: 59556574}
   keyPos: {x: 0, y: 0, z: 0}
+  isPressed: 0
+  isPressedAdjacent: 0
 --- !u!1 &59556569
 GameObject:
   m_ObjectHideFlags: 0
@@ -377,6 +379,8 @@ MonoBehaviour:
   - {fileID: 867825734}
   - {fileID: 743002064}
   keyPos: {x: 0, y: 0, z: 0}
+  isPressed: 0
+  isPressedAdjacent: 0
 --- !u!1 &93736932
 GameObject:
   m_ObjectHideFlags: 0
@@ -503,6 +507,8 @@ MonoBehaviour:
   - {fileID: 2064585507}
   - {fileID: 841713352}
   keyPos: {x: 0, y: 0, z: 0}
+  isPressed: 0
+  isPressedAdjacent: 0
 --- !u!1 &153487306
 GameObject:
   m_ObjectHideFlags: 0
@@ -631,6 +637,8 @@ MonoBehaviour:
   - {fileID: 59556574}
   - {fileID: 743002064}
   keyPos: {x: 0, y: 0, z: 0}
+  isPressed: 0
+  isPressedAdjacent: 0
 --- !u!1 &179462753
 GameObject:
   m_ObjectHideFlags: 0
@@ -759,6 +767,8 @@ MonoBehaviour:
   - {fileID: 743002064}
   - {fileID: 1153769680}
   keyPos: {x: 0, y: 0, z: 0}
+  isPressed: 0
+  isPressedAdjacent: 0
 --- !u!1 &305344961
 GameObject:
   m_ObjectHideFlags: 0
@@ -886,6 +896,8 @@ MonoBehaviour:
   - {fileID: 2064585507}
   - {fileID: 1224675163}
   keyPos: {x: 0, y: 0, z: 0}
+  isPressed: 0
+  isPressedAdjacent: 0
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -1267,6 +1279,8 @@ MonoBehaviour:
   - {fileID: 179462758}
   - {fileID: 1690434985}
   keyPos: {x: 0, y: 0, z: 0}
+  isPressed: 0
+  isPressedAdjacent: 0
 --- !u!1 &498877198
 GameObject:
   m_ObjectHideFlags: 0
@@ -1341,6 +1355,8 @@ MonoBehaviour:
   travelSpeed: 0.2
   keyColor: {r: 0.5803922, g: 0.54901963, b: 0.5372549, a: 0}
   adjacentKeyColor: {r: 1, g: 0.8822515, b: 0.0047169924, a: 0}
+  keyList: []
+  canPlayLevel: 0
 --- !u!1 &551339260
 GameObject:
   m_ObjectHideFlags: 0
@@ -1460,11 +1476,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   code: 
-  keyStatus: 1
+  keyStatus: 0
   adjacentKeyDatas:
   - {fileID: 1562799948}
   - {fileID: 1886369057}
   keyPos: {x: 0, y: 0, z: 0}
+  isPressed: 0
+  isPressedAdjacent: 0
 --- !u!1 &593752362
 GameObject:
   m_ObjectHideFlags: 0
@@ -1591,6 +1609,8 @@ MonoBehaviour:
   - {fileID: 1690434985}
   - {fileID: 305344966}
   keyPos: {x: 0, y: 0, z: 0}
+  isPressed: 0
+  isPressedAdjacent: 0
 --- !u!1 &716896168
 GameObject:
   m_ObjectHideFlags: 0
@@ -1717,6 +1737,8 @@ MonoBehaviour:
   - {fileID: 153487311}
   - {fileID: 179462758}
   keyPos: {x: 0, y: 0, z: 0}
+  isPressed: 0
+  isPressedAdjacent: 0
 --- !u!1 &743002059
 GameObject:
   m_ObjectHideFlags: 0
@@ -1843,6 +1865,8 @@ MonoBehaviour:
   - {fileID: 59556574}
   - {fileID: 1153769680}
   keyPos: {x: 0, y: 0, z: 0}
+  isPressed: 0
+  isPressedAdjacent: 0
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -2018,6 +2042,8 @@ MonoBehaviour:
   - {fileID: 2064585507}
   - {fileID: 1779663598}
   keyPos: {x: 0, y: 0, z: 0}
+  isPressed: 0
+  isPressedAdjacent: 0
 --- !u!1 &867825729
 GameObject:
   m_ObjectHideFlags: 0
@@ -2144,6 +2170,8 @@ MonoBehaviour:
   - {fileID: 1578587530}
   - {fileID: 59556574}
   keyPos: {x: 0, y: 0, z: 0}
+  isPressed: 0
+  isPressedAdjacent: 0
 --- !u!1 &1153769675
 GameObject:
   m_ObjectHideFlags: 0
@@ -2270,6 +2298,8 @@ MonoBehaviour:
   - {fileID: 743002064}
   - {fileID: 1224675163}
   keyPos: {x: 0, y: 0, z: 0}
+  isPressed: 0
+  isPressedAdjacent: 0
 --- !u!1 &1224675158
 GameObject:
   m_ObjectHideFlags: 0
@@ -2395,6 +2425,8 @@ MonoBehaviour:
   - {fileID: 305344966}
   - {fileID: 1153769680}
   keyPos: {x: 0, y: 0, z: 0}
+  isPressed: 0
+  isPressedAdjacent: 0
 --- !u!1 &1238295692
 GameObject:
   m_ObjectHideFlags: 0
@@ -2555,13 +2587,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   code: 
-  keyStatus: 2
+  keyStatus: 0
   adjacentKeyDatas:
   - {fileID: 551339265}
   - {fileID: 1676184004}
   - {fileID: 1886369057}
   - {fileID: 1775723314}
   keyPos: {x: 0, y: 0, z: 0}
+  isPressed: 0
+  isPressedAdjacent: 0
 --- !u!1 &1578587525
 GameObject:
   m_ObjectHideFlags: 0
@@ -2687,6 +2721,8 @@ MonoBehaviour:
   - {fileID: 1775723314}
   - {fileID: 867825734}
   keyPos: {x: 0, y: 0, z: 0}
+  isPressed: 0
+  isPressedAdjacent: 0
 --- !u!1 &1597954515
 GameObject:
   m_ObjectHideFlags: 0
@@ -2813,6 +2849,8 @@ MonoBehaviour:
   - {fileID: 34640411}
   - {fileID: 153487311}
   keyPos: {x: 0, y: 0, z: 0}
+  isPressed: 0
+  isPressedAdjacent: 0
 --- !u!1 &1646455414
 GameObject:
   m_ObjectHideFlags: 0
@@ -2939,6 +2977,8 @@ MonoBehaviour:
   - {fileID: 305344966}
   - {fileID: 2064585507}
   keyPos: {x: 0, y: 0, z: 0}
+  isPressed: 0
+  isPressedAdjacent: 0
 --- !u!1 &1656339049
 GameObject:
   m_ObjectHideFlags: 0
@@ -3102,6 +3142,8 @@ MonoBehaviour:
   - {fileID: 1775723314}
   - {fileID: 34640411}
   keyPos: {x: 0, y: 0, z: 0}
+  isPressed: 0
+  isPressedAdjacent: 0
 --- !u!1 &1690434980
 GameObject:
   m_ObjectHideFlags: 0
@@ -3230,6 +3272,8 @@ MonoBehaviour:
   - {fileID: 305344966}
   - {fileID: 593752367}
   keyPos: {x: 0, y: 0, z: 0}
+  isPressed: 0
+  isPressedAdjacent: 0
 --- !u!1 &1775723309
 GameObject:
   m_ObjectHideFlags: 0
@@ -3358,6 +3402,8 @@ MonoBehaviour:
   - {fileID: 1578587530}
   - {fileID: 867825734}
   keyPos: {x: 0, y: 0, z: 0}
+  isPressed: 0
+  isPressedAdjacent: 0
 --- !u!1 &1779663593
 GameObject:
   m_ObjectHideFlags: 0
@@ -3482,6 +3528,8 @@ MonoBehaviour:
   - {fileID: 1846150780}
   - {fileID: 841713352}
   keyPos: {x: 0, y: 0, z: 0}
+  isPressed: 0
+  isPressedAdjacent: 0
 --- !u!1 &1846150775
 GameObject:
   m_ObjectHideFlags: 0
@@ -3607,6 +3655,8 @@ MonoBehaviour:
   - {fileID: 841713352}
   - {fileID: 1779663598}
   keyPos: {x: 0, y: 0, z: 0}
+  isPressed: 0
+  isPressedAdjacent: 0
 --- !u!1 &1886369052
 GameObject:
   m_ObjectHideFlags: 0
@@ -3726,13 +3776,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   code: 
-  keyStatus: 0
+  keyStatus: 3
   adjacentKeyDatas:
   - {fileID: 551339265}
   - {fileID: 1562799948}
   - {fileID: 1775723314}
   - {fileID: 1578587530}
   keyPos: {x: 0, y: 0, z: 0}
+  isPressed: 0
+  isPressedAdjacent: 0
 --- !u!1 &1930643654
 GameObject:
   m_ObjectHideFlags: 0
@@ -3900,6 +3952,8 @@ MonoBehaviour:
   - {fileID: 305344966}
   - {fileID: 841713352}
   keyPos: {x: 0, y: 0, z: 0}
+  isPressed: 0
+  isPressedAdjacent: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -3907,7 +3961,7 @@ SceneRoots:
   - {fileID: 330585546}
   - {fileID: 410087041}
   - {fileID: 832575519}
+  - {fileID: 498877199}
   - {fileID: 1238295693}
   - {fileID: 1930643655}
   - {fileID: 1656339050}
-  - {fileID: 498877199}

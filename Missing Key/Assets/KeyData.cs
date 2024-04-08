@@ -14,11 +14,13 @@ public class KeyData : MonoBehaviour
     public bool isPressed;
     public bool isPressedAdjacent;
 
+
     public enum KeyStatus //Tous les states spéciaux des touches spéciales
     {
         Basic, 
         Mine, 
-        Hole
+        Hole,
+        Start
     }
 
 
@@ -28,10 +30,6 @@ public class KeyData : MonoBehaviour
         keyPos = transform.position;
         isPressed = false;
         isPressedAdjacent = false;
-    }
 
-    public void Explode()
-    {
-        
     }
 }
