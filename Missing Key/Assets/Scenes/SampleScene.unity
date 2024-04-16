@@ -959,7 +959,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
+  orthographic: 1
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:
@@ -1354,6 +1354,7 @@ MonoBehaviour:
   - {fileID: 1224675163}
   travelSpeed: 0.2
   keyColor: {r: 0.5803922, g: 0.54901963, b: 0.5372549, a: 0}
+  keyPressedColor: {r: 0, g: 0.68260765, b: 1, a: 0}
   adjacentKeyColor: {r: 1, g: 0.8822515, b: 0.0047169924, a: 0}
   keyList: []
   canPlayLevel: 0

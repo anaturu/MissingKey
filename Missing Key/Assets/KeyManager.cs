@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
 
 public class KeyManager : MonoBehaviour
@@ -14,17 +15,24 @@ public class KeyManager : MonoBehaviour
     private readonly Array keyCodes = Enum.GetValues(typeof(KeyCode)); //Array contenant TOUTES les touches du clavier
 
     [SerializeField] private float travelSpeed;
-    [SerializeField] private Color keyColor;
-    [SerializeField] private Color adjacentKeyColor;
+    public Color keyColor;
+    public Color keyPressedColor;
+    public Color adjacentKeyColor;
     
     [SerializeField] private List<GameObject> keyList = new List<GameObject>();
     
     [SerializeField] private bool canPlayLevel;
 
+    public static KeyManager instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
     private void Start()
     {
         canPlayLevel = false;
-
     }
 
     public void Update()
@@ -57,22 +65,24 @@ public class KeyManager : MonoBehaviour
         if (Input.GetKeyDown(FindLastPressedInput())) //Si je press n'importe quel touche du clavier
         {
             KeyData currentKey = ReturnKeyDataFromInput(FindLastPressedInput());
-
-            
             
             //FOR THE SINGLE KEY PRESSED
             for (int i = 0; i < keyCodes.Length; i++)
             {
+                currentKey.OnPressed();
                 currentKey.isPressed = true;
                 currentKey.transform.DOMove(currentKey.keyPos + new Vector3(0, 0.4f, 0), travelSpeed);
-                currentKey.gameObject.GetComponent<MeshRenderer>().material.DOColor(keyColor, 0.2f);
             }
             
             //FOR EVERY ADJACENT KEYS PRESSED
             for (int i = 0; i < currentKey.adjacentKeyDatas.Length; i++) // i = int qui représente chaque touche du clavier adjacente à la currentKey une par une 
             {
                 currentKey.adjacentKeyDatas[i].isPressedAdjacent = true;
-                currentKey.adjacentKeyDatas[i].gameObject.GetComponent<MeshRenderer>().material.DOColor(adjacentKeyColor, 0.2f);
+                
+                if (!currentKey.adjacentKeyDatas[i].isPressed)
+                {
+                    currentKey.adjacentKeyDatas[i].OnHighlight();
+                }
 
                 Debug.Log("Adjacent keys are being pushed down");
             }
@@ -115,13 +125,37 @@ public class KeyManager : MonoBehaviour
                 currentKey.isPressed = false;
                 currentKey.transform.DOMove(currentKey.keyPos, travelSpeed);
                 
+                if (currentKey.isPressedAdjacent)
+                {
+                    currentKey.OnHighlight();
+                }
+                else
+                {
+                    currentKey.OnRelease();
+                }
             }
             
             //FOR EVERY ADJACENT KEYS RELEASED
             for (int i = 0; i < currentKey.adjacentKeyDatas.Length; i++) // i = int qui représente chaque touche du clavier adjacente à la currentKey une par une 
             {
                 currentKey.adjacentKeyDatas[i].isPressedAdjacent = false;
-                currentKey.adjacentKeyDatas[i].gameObject.GetComponent<MeshRenderer>().material.DOColor(keyColor, 0.2f);
+                
+                if (!currentKey.adjacentKeyDatas[i].isPressed)
+                {
+                    currentKey.adjacentKeyDatas[i].OnRelease();
+                }
+                
+                foreach (var key in keyList)
+                {
+                    var keyData = key.GetComponent<KeyData>();
+                    if (keyData.isPressed)
+                    {
+                        for (int j = 0; j < keyData.adjacentKeyDatas.Length; j++)
+                        { 
+                            keyData.adjacentKeyDatas[i].OnHighlight();
+                        }
+                    }
+                }
             }
             
             #region Special Keys
@@ -144,8 +178,6 @@ public class KeyManager : MonoBehaviour
             }
 
             #endregion
-            
-            
         }
     }
 
