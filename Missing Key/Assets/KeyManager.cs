@@ -17,7 +17,6 @@ public class KeyManager : MonoBehaviour
     [SerializeField] private float travelSpeed;
     public Color keyColor;
     public Color keyPressedColor;
-    public Color adjacentKeyColor;
     
     [SerializeField] private List<GameObject> keyList = new List<GameObject>();
     
@@ -38,23 +37,23 @@ public class KeyManager : MonoBehaviour
     public void Update()
     {
         PressKeyBehavior();
-        ReleaseKeyBehavior();
+        ReleaseKeyBehavior(); 
 
         if (keyList.Count > 2)
         {
-            //SceneManager.LoadScene("SampleScene");
+            SceneManager.LoadScene("SampleScene");
             Debug.Log("More than 2 keys : GAME OVER");
         }
 
         if (keyList.Count == 0 && canPlayLevel)
         {
-            //SceneManager.LoadScene("SampleScene");
+            SceneManager.LoadScene("SampleScene");
             Debug.Log("0 keys held down : GAME OVER");
         }
         
         if (keyList.Count == 1 && !canPlayLevel)
         {
-            //SceneManager.LoadScene("SampleScene");
+            SceneManager.LoadScene("SampleScene");
             Debug.Log("Wrong starting key pressed : GAME OVER");
         }
         
@@ -77,14 +76,7 @@ public class KeyManager : MonoBehaviour
             //FOR EVERY ADJACENT KEYS PRESSED
             for (int i = 0; i < currentKey.adjacentKeyDatas.Length; i++) // i = int qui représente chaque touche du clavier adjacente à la currentKey une par une 
             {
-                currentKey.adjacentKeyDatas[i].isPressedAdjacent = true;
                 
-                if (!currentKey.adjacentKeyDatas[i].isPressed)
-                {
-                    currentKey.adjacentKeyDatas[i].OnHighlight();
-                }
-
-                Debug.Log("Adjacent keys are being pushed down");
             }
 
             #region Special Keys
@@ -97,13 +89,24 @@ public class KeyManager : MonoBehaviour
                 case KeyData.KeyStatus.Start:
                     canPlayLevel = true;
                     keyList.Add(currentKey.gameObject);
-
-                    Debug.Log("AZEAZEAZE");
-
                     break;
                 case KeyData.KeyStatus.Mine:
                     break;
                 case KeyData.KeyStatus.Hole:
+                    SceneManager.LoadScene("SampleScene");
+                    Debug.Log("Void pressed : GAME OVER");
+                    break;
+                case KeyData.KeyStatus.Victory:
+                    if (canPlayLevel)
+                    {
+                        SceneManager.LoadScene("Level 1");
+                        Debug.Log("LEVEL IS COMPLETED !");
+                    }
+                    else
+                    {
+                        SceneManager.LoadScene("SampleScene");
+                        Debug.Log("Wrong starting key pressed : GAME OVER");
+                    }
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -125,9 +128,9 @@ public class KeyManager : MonoBehaviour
                 currentKey.isPressed = false;
                 currentKey.transform.DOMove(currentKey.keyPos, travelSpeed);
                 
-                if (currentKey.isPressedAdjacent)
+                if (currentKey.isPressed)
                 {
-                    currentKey.OnHighlight();
+                    currentKey.OnPressed();
                 }
                 else
                 {
@@ -138,24 +141,7 @@ public class KeyManager : MonoBehaviour
             //FOR EVERY ADJACENT KEYS RELEASED
             for (int i = 0; i < currentKey.adjacentKeyDatas.Length; i++) // i = int qui représente chaque touche du clavier adjacente à la currentKey une par une 
             {
-                currentKey.adjacentKeyDatas[i].isPressedAdjacent = false;
                 
-                if (!currentKey.adjacentKeyDatas[i].isPressed)
-                {
-                    currentKey.adjacentKeyDatas[i].OnRelease();
-                }
-                
-                foreach (var key in keyList)
-                {
-                    var keyData = key.GetComponent<KeyData>();
-                    if (keyData.isPressed)
-                    {
-                        for (int j = 0; j < keyData.adjacentKeyDatas.Length; j++)
-                        { 
-                            keyData.adjacentKeyDatas[i].OnHighlight();
-                        }
-                    }
-                }
             }
             
             #region Special Keys
@@ -167,11 +153,10 @@ public class KeyManager : MonoBehaviour
                     break;
                 case KeyData.KeyStatus.Start:
                     keyList.Remove(currentKey.gameObject);
-
                     break;
                 case KeyData.KeyStatus.Mine:
                     break;
-                case KeyData.KeyStatus.Hole:
+                case KeyData.KeyStatus.Victory:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
