@@ -25,6 +25,8 @@ public class KeyManager : MonoBehaviour
 
     public static KeyManager instance;
 
+    private UIManager _uiManager;
+
     private void Awake()
     {
         instance = this;
@@ -33,6 +35,7 @@ public class KeyManager : MonoBehaviour
     private void Start()
     {
         canPlayLevel = false;
+        _uiManager = UIManager.instance;
     }
 
     public void Update()
@@ -98,16 +101,7 @@ public class KeyManager : MonoBehaviour
                     Debug.Log("Void pressed : GAME OVER");
                     break;
                 case KeyData.KeyStatus.Victory:
-                    if (canPlayLevel)
-                    {
-                        SceneManager.LoadScene(nextLevelName);
-                        Debug.Log("LEVEL IS COMPLETED !");
-                    }
-                    else
-                    {
-                        SceneManager.LoadScene(currentLevelName);
-                        Debug.Log("Wrong starting key pressed : GAME OVER");
-                    }
+                    StartCoroutine(VictoryEvent());
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -164,6 +158,23 @@ public class KeyManager : MonoBehaviour
             }
 
             #endregion
+        }
+    }
+
+    private IEnumerator VictoryEvent()
+    {
+
+        yield return new WaitForSeconds(3f);
+        
+        if (canPlayLevel)
+        {
+            SceneManager.LoadScene(nextLevelName);
+            Debug.Log("LEVEL IS COMPLETED !");
+        }
+        else
+        {
+            SceneManager.LoadScene(currentLevelName);
+            Debug.Log("Wrong starting key pressed : GAME OVER");
         }
     }
 
