@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 using DG.Tweening;
+using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
 
@@ -15,9 +16,9 @@ public class KeyManager : MonoBehaviour
     private readonly Array keyCodes = Enum.GetValues(typeof(KeyCode)); //Array contenant TOUTES les touches du clavier
 
     [SerializeField] private float travelSpeed;
-    public Color keyColor;
-    public Color keyPressedColor;
-    
+    public string currentLevelName;
+    [CanBeNull] public string nextLevelName;
+
     [SerializeField] private List<GameObject> keyList = new List<GameObject>();
     
     [SerializeField] private bool canPlayLevel;
@@ -41,19 +42,19 @@ public class KeyManager : MonoBehaviour
 
         if (keyList.Count > 2)
         {
-            SceneManager.LoadScene("SampleScene");
+            SceneManager.LoadScene(currentLevelName);
             Debug.Log("More than 2 keys : GAME OVER");
         }
 
         if (keyList.Count == 0 && canPlayLevel)
         {
-            SceneManager.LoadScene("SampleScene");
+            SceneManager.LoadScene(currentLevelName);
             Debug.Log("0 keys held down : GAME OVER");
         }
         
         if (keyList.Count == 1 && !canPlayLevel)
         {
-            SceneManager.LoadScene("SampleScene");
+            SceneManager.LoadScene(currentLevelName);
             Debug.Log("Wrong starting key pressed : GAME OVER");
         }
         
@@ -93,18 +94,18 @@ public class KeyManager : MonoBehaviour
                 case KeyData.KeyStatus.Mine:
                     break;
                 case KeyData.KeyStatus.Hole:
-                    SceneManager.LoadScene("SampleScene");
+                    SceneManager.LoadScene(currentLevelName);
                     Debug.Log("Void pressed : GAME OVER");
                     break;
                 case KeyData.KeyStatus.Victory:
                     if (canPlayLevel)
                     {
-                        SceneManager.LoadScene("Level 1");
+                        SceneManager.LoadScene(nextLevelName);
                         Debug.Log("LEVEL IS COMPLETED !");
                     }
                     else
                     {
-                        SceneManager.LoadScene("SampleScene");
+                        SceneManager.LoadScene(currentLevelName);
                         Debug.Log("Wrong starting key pressed : GAME OVER");
                     }
                     break;

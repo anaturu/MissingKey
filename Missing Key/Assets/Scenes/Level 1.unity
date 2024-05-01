@@ -1346,8 +1346,8 @@ MonoBehaviour:
   - {fileID: 1153769680}
   - {fileID: 1224675163}
   travelSpeed: 0.2
-  keyColor: {r: 0.5803922, g: 0.54901963, b: 0.5372549, a: 0}
-  keyPressedColor: {r: 0, g: 0.68260765, b: 1, a: 0}
+  currentLevelName: Level 1
+  nextLevelName: Level 2
   keyList: []
   canPlayLevel: 0
 --- !u!1 &551339260
