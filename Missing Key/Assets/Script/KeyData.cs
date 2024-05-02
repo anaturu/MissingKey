@@ -12,8 +12,11 @@ public class KeyData : MonoBehaviour
     public KeyStatus keyStatus; //Variable contenant l'enum "KeyStatus"
     public KeyData[] adjacentKeyDatas; //Contient  toute les touches adjacentes à la touche
     [HideInInspector] public Vector3 keyPos;
+
+    private Transform keyTransform;
+    private KeyManager keyManager;
+
     public bool isPressed;
-    
 
     public enum KeyStatus //Tous les states spéciaux des touches spéciales
     {
@@ -29,6 +32,7 @@ public class KeyData : MonoBehaviour
         code = gameObject.name;
         keyPos = transform.position;
         isPressed = false;
+        keyManager = KeyManager.instance;
     }
 
     public void OnPressed()

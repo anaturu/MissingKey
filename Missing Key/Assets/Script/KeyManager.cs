@@ -19,9 +19,10 @@ public class KeyManager : MonoBehaviour
     public string currentLevelName;
     [CanBeNull] public string nextLevelName;
 
-    [SerializeField] private List<GameObject> keyList = new List<GameObject>();
+    [SerializeField] private List<KeyData> keyList = new List<KeyData>();
     
     [SerializeField] private bool canPlayLevel;
+    [SerializeField] private bool isAdjacent;
 
     public static KeyManager instance;
 
@@ -43,7 +44,7 @@ public class KeyManager : MonoBehaviour
         PressKeyBehavior();
         ReleaseKeyBehavior(); 
 
-        if (keyList.Count > 2)
+        if (keyList.Count > 2 && keyList[0].keyStatus != KeyData.KeyStatus.Mine)
         {
             SceneManager.LoadScene(currentLevelName);
             Debug.Log("More than 2 keys : GAME OVER");
@@ -70,37 +71,45 @@ public class KeyManager : MonoBehaviour
             KeyData currentKey = ReturnKeyDataFromInput(FindLastPressedInput());
             
             //FOR THE SINGLE KEY PRESSED
-            for (int i = 0; i < keyCodes.Length; i++)
-            {
-                currentKey.OnPressed();
-                currentKey.isPressed = true;
-                currentKey.transform.DOMove(currentKey.keyPos + new Vector3(0, 0.4f, 0), travelSpeed);
-            }
+            currentKey.OnPressed();
+            currentKey.isPressed = true;
+            currentKey.transform.DOMove(currentKey.keyPos + new Vector3(0, 0.4f, 0), travelSpeed);
+
+            
+           
             
             //FOR EVERY ADJACENT KEYS PRESSED
             for (int i = 0; i < currentKey.adjacentKeyDatas.Length; i++) // i = int qui représente chaque touche du clavier adjacente à la currentKey une par une 
             {
                 
             }
-
+            
             #region Special Keys
             
             switch(currentKey.keyStatus)
             {
                 case KeyData.KeyStatus.Basic:
-                    keyList.Add(currentKey.gameObject);
+                    keyList.Add(currentKey.GetComponent<KeyData>());
                     break;
                 case KeyData.KeyStatus.Start:
                     canPlayLevel = true;
-                    keyList.Add(currentKey.gameObject);
+                    keyList.Add(currentKey.GetComponent<KeyData>());
                     break;
                 case KeyData.KeyStatus.Mine:
+                    keyList.Add(currentKey.GetComponent<KeyData>());
+                    
+                    for (int i = 0; i < currentKey.adjacentKeyDatas.Length; i++) // i = int qui représente chaque touche du clavier adjacente à la currentKey une par une 
+                    {
+                        currentKey.adjacentKeyDatas[i].transform.DORotate(new Vector3(0, 0, 180), 0.2f);
+                    }
                     break;
                 case KeyData.KeyStatus.Hole:
                     SceneManager.LoadScene(currentLevelName);
                     Debug.Log("Void pressed : GAME OVER");
                     break;
                 case KeyData.KeyStatus.Victory:
+                    keyList.Add(currentKey.GetComponent<KeyData>());
+                    
                     if (canPlayLevel)
                     {
                         SceneManager.LoadScene(nextLevelName);
@@ -117,8 +126,32 @@ public class KeyManager : MonoBehaviour
             }
             
             #endregion
+            
+            if(keyList.Count > 1)
+            {
+                if (CheckIfAdjacent(currentKey, keyList[0])) //check si la touche est adjacente ou non (currentKey étant toujours la touche la plus récente)
+                {
+                    //DO CODE HERE pour la key pressé adjacente la plus récente
+                }
+                else
+                {
+                    SceneManager.LoadScene(currentLevelName);
+                    Debug.Log("Pressed key is not adjacent : GAME OVER");
+                }
+            }
 
+            if (keyList[0].keyStatus == KeyData.KeyStatus.Mine) //Si une mine est active
+            {
+                if (CheckIfNeutralized(keyList[0]))
+                {
+                    Debug.Log("Toutes les touches adjacentes à la mine ont été enfoncés");
+
+                }
+                
+            }
         }
+        
+        
     }
     private void ReleaseKeyBehavior()
     {
@@ -127,19 +160,16 @@ public class KeyManager : MonoBehaviour
             KeyData currentKey = ReturnKeyDataFromInput(FindLastReleasedInput());
 
             //FOR THE SINGLE KEY RELEASED
-            for (int i = 0; i < keyCodes.Length; i++)
-            {
-                currentKey.isPressed = false;
-                currentKey.transform.DOMove(currentKey.keyPos, travelSpeed);
+            currentKey.isPressed = false;
+            currentKey.transform.DOMove(currentKey.keyPos, travelSpeed);
                 
-                if (currentKey.isPressed)
-                {
-                    currentKey.OnPressed();
-                }
-                else
-                {
-                    currentKey.OnRelease();
-                }
+            if (currentKey.isPressed)
+            {
+                currentKey.OnPressed();
+            }
+            else
+            {
+                currentKey.OnRelease();
             }
             
             //FOR EVERY ADJACENT KEYS RELEASED
@@ -153,12 +183,14 @@ public class KeyManager : MonoBehaviour
             switch(currentKey.keyStatus)
             {
                 case KeyData.KeyStatus.Basic:
-                    keyList.Remove(currentKey.gameObject);
+                    keyList.Remove(currentKey.GetComponent<KeyData>());
                     break;
                 case KeyData.KeyStatus.Start:
-                    keyList.Remove(currentKey.gameObject);
+                    keyList.Remove(currentKey.GetComponent<KeyData>());
                     break;
                 case KeyData.KeyStatus.Mine:
+                    keyList.Remove(currentKey.GetComponent<KeyData>());
+
                     break;
                 case KeyData.KeyStatus.Victory:
                     break;
@@ -168,9 +200,39 @@ public class KeyManager : MonoBehaviour
 
             #endregion
         }
+        
+    }
+    private IEnumerator VictoryEvent()
+    {
+        yield return new WaitForSeconds(1);
+        
     }
 
-    KeyData ReturnKeyDataFromInput(KeyCode keyCode) //Permet de traduire keyCode en KeyData (script)
+    private bool CheckIfNeutralized(KeyData currentPressedMine)
+    {
+        for (int i = 0; i < currentPressedMine.adjacentKeyDatas.Length; i++)
+        {
+            if (!currentPressedMine.adjacentKeyDatas[i].isPressed) //Si toutes les touches adjacentes sont pressés
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    private bool CheckIfAdjacent(KeyData keyToCheck, KeyData pressedKey)
+    {
+        for (int i = 0; i < pressedKey.adjacentKeyDatas.Length; i++)
+        {
+            if (keyToCheck == pressedKey.adjacentKeyDatas[i])
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+        
+    public KeyData ReturnKeyDataFromInput(KeyCode keyCode) //Permet de traduire keyCode en KeyData (script)
     {
         KeyData value = new KeyData();
         
@@ -185,7 +247,7 @@ public class KeyManager : MonoBehaviour
 
         return value;
     }
-    KeyCode FindLastPressedInput() //Correspond au dernier Input pressé
+    public KeyCode FindLastPressedInput() //Correspond au dernier Input pressé
     {
         KeyCode value = new KeyCode();
         foreach (KeyCode keyCode in keyCodes)
@@ -198,7 +260,7 @@ public class KeyManager : MonoBehaviour
         }
         return value;
     }
-    KeyCode FindLastReleasedInput() //Correspond au dernier Input relâché
+    public KeyCode FindLastReleasedInput() //Correspond au dernier Input relâché
     {
         KeyCode value = new KeyCode();
         foreach (KeyCode keyCode in keyCodes)
