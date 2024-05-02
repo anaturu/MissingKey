@@ -101,7 +101,16 @@ public class KeyManager : MonoBehaviour
                     Debug.Log("Void pressed : GAME OVER");
                     break;
                 case KeyData.KeyStatus.Victory:
-                    StartCoroutine(VictoryEvent());
+                    if (canPlayLevel)
+                    {
+                        SceneManager.LoadScene(nextLevelName);
+                        Debug.Log("LEVEL IS COMPLETED !");
+                    }
+                    else
+                    {
+                        SceneManager.LoadScene(currentLevelName);
+                        Debug.Log("Wrong starting key pressed : GAME OVER");
+                    }
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -158,23 +167,6 @@ public class KeyManager : MonoBehaviour
             }
 
             #endregion
-        }
-    }
-
-    private IEnumerator VictoryEvent()
-    {
-
-        yield return new WaitForSeconds(3f);
-        
-        if (canPlayLevel)
-        {
-            SceneManager.LoadScene(nextLevelName);
-            Debug.Log("LEVEL IS COMPLETED !");
-        }
-        else
-        {
-            SceneManager.LoadScene(currentLevelName);
-            Debug.Log("Wrong starting key pressed : GAME OVER");
         }
     }
 
