@@ -1018,6 +1018,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: KEYBOARD
       objectReference: {fileID: 0}
+    - target: {fileID: 4506762853120230848, guid: efe36158e7ceea341b96efe8fbeab8ec,
+        type: 3}
+      propertyPath: keyStatus
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4763183926689331499, guid: efe36158e7ceea341b96efe8fbeab8ec,
         type: 3}
       propertyPath: m_LocalPosition.x

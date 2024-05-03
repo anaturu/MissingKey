@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 
 public class KeyData : MonoBehaviour
 {
@@ -30,6 +32,7 @@ public class KeyData : MonoBehaviour
     private void Start()
     {
         code = gameObject.name;
+            
         keyPos = transform.position;
         isPressed = false;
         keyManager = KeyManager.instance;

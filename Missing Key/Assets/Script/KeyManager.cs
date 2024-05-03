@@ -7,6 +7,9 @@ using Random = UnityEngine.Random;
 using DG.Tweening;
 using JetBrains.Annotations;
 using Unity.VisualScripting;
+using UnityEngine.InputSystem.Controls;
+using UnityEngine.InputSystem.LowLevel;
+using UnityEngine.InputSystem.Utilities;
 using UnityEngine.SceneManagement;
 
 public class KeyManager : MonoBehaviour
@@ -37,12 +40,18 @@ public class KeyManager : MonoBehaviour
     {
         canPlayLevel = false;
         _uiManager = UIManager.instance;
+
+        //Keyboard.current.onTextInput += CheckKeyboardInputPressed;
     }
 
     public void Update()
     {
         PressKeyBehavior();
-        ReleaseKeyBehavior(); 
+        ReleaseKeyBehavior();
+        
+        //CheckKeyboardInputStillPressed();
+
+        //return;
 
         if (keyList.Count > 2 && keyList[0].keyStatus != KeyData.KeyStatus.Mine)
         {
@@ -74,9 +83,6 @@ public class KeyManager : MonoBehaviour
             currentKey.OnPressed();
             currentKey.isPressed = true;
             currentKey.transform.DOMove(currentKey.keyPos + new Vector3(0, 0.4f, 0), travelSpeed);
-
-            
-           
             
             //FOR EVERY ADJACENT KEYS PRESSED
             for (int i = 0; i < currentKey.adjacentKeyDatas.Length; i++) // i = int qui représente chaque touche du clavier adjacente à la currentKey une par une 
@@ -85,20 +91,22 @@ public class KeyManager : MonoBehaviour
             }
             
             #region Special Keys
+
+            var keyData = currentKey.GetComponent<KeyData>();
             
             switch(currentKey.keyStatus)
             {
                 case KeyData.KeyStatus.Basic:
-                    keyList.Add(currentKey.GetComponent<KeyData>());
+                    keyList.Add(keyData);
                     break;
                 case KeyData.KeyStatus.Start:
                     canPlayLevel = true;
-                    keyList.Add(currentKey.GetComponent<KeyData>());
+                    keyList.Add(keyData);
                     break;
                 case KeyData.KeyStatus.Mine:
-                    keyList.Add(currentKey.GetComponent<KeyData>());
+                    keyList.Add(keyData);
                     
-                    for (int i = 0; i < currentKey.adjacentKeyDatas.Length; i++) // i = int qui représente chaque touche du clavier adjacente à la currentKey une par une 
+                    for (int i = 0; i < currentKey.adjacentKeyDatas.Length; i++) // Pour toutes les touches adjacentes à la touche pressé
                     {
                         currentKey.adjacentKeyDatas[i].transform.DORotate(new Vector3(0, 0, 180), 0.2f);
                     }
@@ -129,7 +137,9 @@ public class KeyManager : MonoBehaviour
             
             if(keyList.Count > 1)
             {
-                if (CheckIfAdjacent(currentKey, keyList[0])) //check si la touche est adjacente ou non (currentKey étant toujours la touche la plus récente)
+                //check si la touche est adjacente ou non (currentKey étant toujours la touche la plus récente),
+                //et keyList[0] étant la plus ancienne
+                if (CheckIfAdjacent(currentKey, keyList[0]))
                 {
                     //DO CODE HERE pour la key pressé adjacente la plus récente
                 }
@@ -162,15 +172,6 @@ public class KeyManager : MonoBehaviour
             //FOR THE SINGLE KEY RELEASED
             currentKey.isPressed = false;
             currentKey.transform.DOMove(currentKey.keyPos, travelSpeed);
-                
-            if (currentKey.isPressed)
-            {
-                currentKey.OnPressed();
-            }
-            else
-            {
-                currentKey.OnRelease();
-            }
             
             //FOR EVERY ADJACENT KEYS RELEASED
             for (int i = 0; i < currentKey.adjacentKeyDatas.Length; i++) // i = int qui représente chaque touche du clavier adjacente à la currentKey une par une 
@@ -190,7 +191,6 @@ public class KeyManager : MonoBehaviour
                     break;
                 case KeyData.KeyStatus.Mine:
                     keyList.Remove(currentKey.GetComponent<KeyData>());
-
                     break;
                 case KeyData.KeyStatus.Victory:
                     break;
@@ -200,11 +200,6 @@ public class KeyManager : MonoBehaviour
 
             #endregion
         }
-        
-    }
-    private IEnumerator VictoryEvent()
-    {
-        yield return new WaitForSeconds(1);
         
     }
 
@@ -271,6 +266,58 @@ public class KeyManager : MonoBehaviour
                 break;
             }
         }
+        return value;
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------
+    
+    private void CheckKeyboardInputPressed(Char c)
+    {
+        KeyData currentKey = ReturnKeyDataFromChar(c);
+
+        if (!currentKey) return;
+        if (currentKey.isPressed) return;
+        
+        keyList.Add(currentKey);
+        
+        currentKey.OnPressed();
+        currentKey.isPressed = true;
+        currentKey.transform.DOMove(currentKey.keyPos + new Vector3(0, 0.4f, 0), travelSpeed);
+    }
+
+    private void CheckKeyboardInputStillPressed()
+    {
+        foreach (KeyData currentKey in keyList.ToArray())
+        {
+            if (currentKey.isPressed)
+            {
+                Debug.Log("YOUPI");
+        
+                currentKey.OnPressed();
+                currentKey.isPressed = false;
+                currentKey.transform.DOMove(currentKey.keyPos, travelSpeed);
+
+                keyList.Remove(currentKey);
+            }
+        }
+    }
+
+    private KeyData ReturnKeyDataFromChar(Char c)
+    {
+        KeyData value = new KeyData();
+        
+        foreach (var kd in _keyDatas)
+        {
+            if (kd.code == c.ToString().ToUpper())
+            {
+                value = kd;
+                break;
+            }
+        }
+
         return value;
     }
 }
