@@ -19,8 +19,8 @@ public class KeyManager : MonoBehaviour
     private readonly Array keyCodes = Enum.GetValues(typeof(KeyCode)); //Array contenant TOUTES les touches du clavier
 
     [SerializeField] private float travelSpeed;
-    public string currentLevelName;
-    [CanBeNull] public string nextLevelName;
+    public string loadCurrentLevel;
+    [CanBeNull] public string loadNextLevel;
 
     [SerializeField] private List<KeyData> keyList = new List<KeyData>();
     
@@ -55,19 +55,19 @@ public class KeyManager : MonoBehaviour
 
         if (keyList.Count > 2 && keyList[0].keyStatus != KeyData.KeyStatus.Mine)
         {
-            SceneManager.LoadScene(currentLevelName);
+            SceneManager.LoadScene(loadCurrentLevel);
             Debug.Log("More than 2 keys : GAME OVER");
         }
 
         if (keyList.Count == 0 && canPlayLevel)
         {
-            SceneManager.LoadScene(currentLevelName);
+            SceneManager.LoadScene(loadCurrentLevel);
             Debug.Log("0 keys held down : GAME OVER");
         }
         
         if (keyList.Count == 1 && !canPlayLevel)
         {
-            SceneManager.LoadScene(currentLevelName);
+            SceneManager.LoadScene(loadCurrentLevel);
             Debug.Log("Wrong starting key pressed : GAME OVER");
         }
         
@@ -112,7 +112,7 @@ public class KeyManager : MonoBehaviour
                     }
                     break;
                 case KeyData.KeyStatus.Hole:
-                    SceneManager.LoadScene(currentLevelName);
+                    SceneManager.LoadScene(loadCurrentLevel);
                     Debug.Log("Void pressed : GAME OVER");
                     break;
                 case KeyData.KeyStatus.Victory:
@@ -120,12 +120,12 @@ public class KeyManager : MonoBehaviour
                     
                     if (canPlayLevel)
                     {
-                        SceneManager.LoadScene(nextLevelName);
+                        SceneManager.LoadScene(loadNextLevel);
                         Debug.Log("LEVEL IS COMPLETED !");
                     }
                     else
                     {
-                        SceneManager.LoadScene(currentLevelName);
+                        SceneManager.LoadScene(loadCurrentLevel);
                         Debug.Log("Wrong starting key pressed : GAME OVER");
                     }
                     break;
@@ -145,7 +145,7 @@ public class KeyManager : MonoBehaviour
                 }
                 else
                 {
-                    SceneManager.LoadScene(currentLevelName);
+                    SceneManager.LoadScene(loadCurrentLevel);
                     Debug.Log("Pressed key is not adjacent : GAME OVER");
                 }
             }
@@ -154,6 +154,7 @@ public class KeyManager : MonoBehaviour
             {
                 if (CheckIfNeutralized(keyList[0]))
                 {
+                    
                     Debug.Log("Toutes les touches adjacentes à la mine ont été enfoncés");
 
                 }
