@@ -83,7 +83,7 @@ public class KeyManager : MonoBehaviour
             //FOR THE SINGLE KEY PRESSED
             currentKey.OnPressed();
             currentKey.isPressed = true;
-            currentKey.transform.DOMove(currentKey.keyPos + new Vector3(0, 0.4f, 0), travelSpeed);
+            currentKey.transform.DOMove(currentKey.keyPos + new Vector3(0, 0.2f, 0), travelSpeed);
             
             //FOR EVERY ADJACENT KEYS PRESSED
             for (int i = 0; i < currentKey.adjacentKeyDatas.Length; i++) // i = int qui représente chaque touche du clavier adjacente à la currentKey une par une 
