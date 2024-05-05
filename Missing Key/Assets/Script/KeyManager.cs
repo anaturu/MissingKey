@@ -17,19 +17,20 @@ public class KeyManager : MonoBehaviour
     //DONT TOUCH THESE
     [SerializeField] private KeyData[] _keyDatas; //Array du script "KeyData"
     private readonly Array keyCodes = Enum.GetValues(typeof(KeyCode)); //Array contenant TOUTES les touches du clavier
+    
+    public static KeyManager instance;
+    private UIManager _uiManager;
 
+    [SerializeField] private List<KeyData> keyList = new List<KeyData>();
+    
     [SerializeField] private float travelSpeed;
     public string loadCurrentLevel;
     [CanBeNull] public string loadNextLevel;
-
-    [SerializeField] private List<KeyData> keyList = new List<KeyData>();
     
     [SerializeField] private bool canPlayLevel;
     [SerializeField] private bool isAdjacent;
 
-    public static KeyManager instance;
-
-    private UIManager _uiManager;
+    
 
     private void Awake()
     {
@@ -105,7 +106,6 @@ public class KeyManager : MonoBehaviour
                     break;
                 case KeyData.KeyStatus.Mine:
                     keyList.Add(keyData);
-                    
                     for (int i = 0; i < currentKey.adjacentKeyDatas.Length; i++) // Pour toutes les touches adjacentes à la touche pressé
                     {
                         currentKey.adjacentKeyDatas[i].transform.DORotate(new Vector3(0, 0, 180), 0.2f);
@@ -117,7 +117,6 @@ public class KeyManager : MonoBehaviour
                     break;
                 case KeyData.KeyStatus.Victory:
                     keyList.Add(currentKey.GetComponent<KeyData>());
-                    
                     if (canPlayLevel)
                     {
                         SceneManager.LoadScene(loadNextLevel);
@@ -128,6 +127,9 @@ public class KeyManager : MonoBehaviour
                         SceneManager.LoadScene(loadCurrentLevel);
                         Debug.Log("Wrong starting key pressed : GAME OVER");
                     }
+                    break;
+                case KeyData.KeyStatus.Teleporter:
+                    keyList.Add(keyData);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -154,11 +156,13 @@ public class KeyManager : MonoBehaviour
             {
                 if (CheckIfNeutralized(keyList[0]))
                 {
-                    
                     Debug.Log("Toutes les touches adjacentes à la mine ont été enfoncés");
-
                 }
-                
+            }
+            
+            if (currentKey.keyStatus == KeyData.KeyStatus.Teleporter)
+            {
+                Debug.Log("TP est enfoncé");
             }
         }
         
@@ -195,6 +199,9 @@ public class KeyManager : MonoBehaviour
                     break;
                 case KeyData.KeyStatus.Victory:
                     break;
+                case KeyData.KeyStatus.Teleporter:
+                    keyList.Remove(currentKey.GetComponent<KeyData>());
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -224,10 +231,9 @@ public class KeyManager : MonoBehaviour
                 return true;
             }
         }
-
         return false;
     }
-        
+
     public KeyData ReturnKeyDataFromInput(KeyCode keyCode) //Permet de traduire keyCode en KeyData (script)
     {
         KeyData value = new KeyData();

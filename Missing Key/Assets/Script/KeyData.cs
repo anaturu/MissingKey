@@ -11,12 +11,15 @@ public class KeyData : MonoBehaviour
     [Header("DO NOT TOUCH")]
     public string code;
     
+    private KeyManager keyManager;
+    
     public KeyStatus keyStatus; //Variable contenant l'enum "KeyStatus"
     public KeyData[] adjacentKeyDatas; //Contient  toute les touches adjacentes à la touche
     [HideInInspector] public Vector3 keyPos;
 
     private Transform keyTransform;
-    private KeyManager keyManager;
+    public GameObject tpOutput;
+
 
     public bool isPressed;
 
@@ -26,7 +29,8 @@ public class KeyData : MonoBehaviour
         Mine, 
         Hole,
         Start,
-        Victory
+        Victory,
+        Teleporter
     }
 
     private void Start()
