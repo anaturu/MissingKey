@@ -23,6 +23,9 @@ public class KeyManager : MonoBehaviour
 
     [SerializeField] private List<KeyData> keyList = new List<KeyData>();
     
+    public KeyData[] fakeVictoryKeys;
+    public int indexFakeVictory;
+    
     [SerializeField] private float travelSpeed;
     public string loadCurrentLevel;
     [CanBeNull] public string loadNextLevel;
@@ -130,6 +133,29 @@ public class KeyManager : MonoBehaviour
                     break;
                 case KeyData.KeyStatus.Teleporter:
                     keyList.Add(keyData);
+                    currentKey.tpOutput.GetComponent<MeshRenderer>().material = currentKey.GetComponent<MeshRenderer>().material;
+                    break;
+                case KeyData.KeyStatus.FakeVictory:
+                    keyList.Add(keyData);
+                    if (fakeVictoryKeys[indexFakeVictory].isPressed) //Si l'index actuel est pressé
+                    {
+                        Debug.Log("INDEX");
+                        if (fakeVictoryKeys[indexFakeVictory+1] == fakeVictoryKeys[fakeVictoryKeys.Length -1]) //Si l'élément suivant dans la liste est le dernier élément de la liste
+                        {
+                            fakeVictoryKeys[indexFakeVictory+1].GetComponent<MeshRenderer>().material = currentKey.GetComponent<MeshRenderer>().material;
+                            fakeVictoryKeys[indexFakeVictory+1].keyStatus = KeyData.KeyStatus.Victory;
+                            Debug.Log("Last Touch");
+                        }
+                        else
+                        {
+                            fakeVictoryKeys[indexFakeVictory+1].GetComponent<MeshRenderer>().material = currentKey.GetComponent<MeshRenderer>().material;
+                            fakeVictoryKeys[indexFakeVictory+1].keyStatus = KeyData.KeyStatus.FakeVictory;
+                            indexFakeVictory++;
+                        }
+
+                    }
+
+                    
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -202,13 +228,14 @@ public class KeyManager : MonoBehaviour
                 case KeyData.KeyStatus.Teleporter:
                     keyList.Remove(currentKey.GetComponent<KeyData>());
                     break;
+                case KeyData.KeyStatus.FakeVictory:
+                    keyList.Remove(currentKey.GetComponent<KeyData>());
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-
             #endregion
         }
-        
     }
 
     private bool CheckIfNeutralized(KeyData currentPressedMine)

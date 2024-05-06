@@ -19,6 +19,7 @@ public class KeyData : MonoBehaviour
 
     private Transform keyTransform;
     public GameObject tpOutput;
+    
 
 
     public bool isPressed;
@@ -30,7 +31,8 @@ public class KeyData : MonoBehaviour
         Hole,
         Start,
         Victory,
-        Teleporter
+        Teleporter,
+        FakeVictory
     }
 
     private void Start()
