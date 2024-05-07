@@ -1665,6 +1665,80 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1133697045}
   m_CullTransparentMesh: 1
+--- !u!1001 &1146900722
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2836916762066704232, guid: 3221b964c0ee6c9469d831f029511cc6,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 2836916762066704232, guid: 3221b964c0ee6c9469d831f029511cc6,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2836916762066704232, guid: 3221b964c0ee6c9469d831f029511cc6,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2836916762066704232, guid: 3221b964c0ee6c9469d831f029511cc6,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2836916762066704232, guid: 3221b964c0ee6c9469d831f029511cc6,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2836916762066704232, guid: 3221b964c0ee6c9469d831f029511cc6,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2836916762066704232, guid: 3221b964c0ee6c9469d831f029511cc6,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2836916762066704232, guid: 3221b964c0ee6c9469d831f029511cc6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2836916762066704232, guid: 3221b964c0ee6c9469d831f029511cc6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2836916762066704232, guid: 3221b964c0ee6c9469d831f029511cc6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8774766425764571356, guid: 3221b964c0ee6c9469d831f029511cc6,
+        type: 3}
+      propertyPath: m_Name
+      value: LevelTransitionAnim
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3221b964c0ee6c9469d831f029511cc6, type: 3}
+--- !u!1 &1146900723 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8774766425764571356, guid: 3221b964c0ee6c9469d831f029511cc6,
+    type: 3}
+  m_PrefabInstance: {fileID: 1146900722}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1153769680 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3800643611015689846, guid: efe36158e7ceea341b96efe8fbeab8ec,
@@ -2442,6 +2516,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4200751794741831323, guid: 9b9ed2e724a86594a85c70f7b7cf196e,
         type: 3}
+      propertyPath: transitionCube
+      value: 
+      objectReference: {fileID: 1146900723}
+    - target: {fileID: 4200751794741831323, guid: 9b9ed2e724a86594a85c70f7b7cf196e,
+        type: 3}
       propertyPath: loadCurrentLevel
       value: Level 6.1
       objectReference: {fileID: 0}
@@ -3062,3 +3141,4 @@ SceneRoots:
   - {fileID: 5897982375763764738}
   - {fileID: 6179144998365296564}
   - {fileID: 1334586324}
+  - {fileID: 1146900722}

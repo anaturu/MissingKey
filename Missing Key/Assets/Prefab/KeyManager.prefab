@@ -73,15 +73,11 @@ MonoBehaviour:
   - {fileID: 0}
   keyList: []
   fakeVictoryKeys: []
-  matBasic: {fileID: 2100000, guid: 21c9dc1df3875994b850507becc20fa8, type: 2}
-  matStart: {fileID: 2100000, guid: 0904c0a79bf67a44686e3c349d073a5c, type: 2}
-  matVoid: {fileID: 2100000, guid: 9494cf2664f1134448162f7c8f40a80e, type: 2}
-  matTp: {fileID: 2100000, guid: 9f636dcd8e0d43a4696a6f2c92d81fdd, type: 2}
-  matTrap: {fileID: 2100000, guid: 898c0fb0b35f6b8429e46a5622b853fb, type: 2}
-  matFakeVictory: {fileID: 2100000, guid: 28c7ac982453e0841bb8cccdc6389aaa, type: 2}
-  matVictory: {fileID: 2100000, guid: 97941ecfa09032343a1046a336026aba, type: 2}
+  transitionCube: {fileID: 0}
   indexFakeVictory: 0
+  indexWinEvent: 0
   travelSpeed: 0.2
+  levelTransitionSpeed: 1
   loadCurrentLevel: 
   loadNextLevel: 
   canPlayLevel: 0

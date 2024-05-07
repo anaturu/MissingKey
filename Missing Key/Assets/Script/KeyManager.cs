@@ -24,14 +24,20 @@ public class KeyManager : MonoBehaviour
     [SerializeField] private List<KeyData> keyList = new List<KeyData>();
     
     public KeyData[] fakeVictoryKeys;
+    public GameObject transitionCube;
+    public Transform transitionStartPos;
+
     public int indexFakeVictory;
+    public int indexWinEvent;
     
     [SerializeField] private float travelSpeed;
+    [SerializeField] private float levelTransitionSpeed;
     public string loadCurrentLevel;
     [CanBeNull] public string loadNextLevel;
     
     [SerializeField] private bool canPlayLevel;
     [SerializeField] private bool isAdjacent;
+    [SerializeField] private bool gameHasBegun;
 
     
 
@@ -43,7 +49,12 @@ public class KeyManager : MonoBehaviour
     private void Start()
     {
         canPlayLevel = false;
+        gameHasBegun = false;
         _uiManager = UIManager.instance;
+        transitionStartPos = GameObject.Find("StartPos").GetComponent<Transform>();
+        transitionCube.transform.position = transitionStartPos.transform.position;
+        //Move la plaque vers la gauche
+        transitionCube.transform.DOLocalMove(new Vector3(18, 1f, 0f), levelTransitionSpeed).SetEase(Ease.InBounce); 
 
         //Keyboard.current.onTextInput += CheckKeyboardInputPressed;
     }
@@ -52,6 +63,8 @@ public class KeyManager : MonoBehaviour
     {
         PressKeyBehavior();
         ReleaseKeyBehavior();
+        
+        
         
         //CheckKeyboardInputStillPressed();
 
@@ -74,7 +87,7 @@ public class KeyManager : MonoBehaviour
             SceneManager.LoadScene(loadCurrentLevel);
             Debug.Log("Wrong starting key pressed : GAME OVER");
         }
-        
+
     }
 
     private void PressKeyBehavior()
@@ -120,19 +133,6 @@ public class KeyManager : MonoBehaviour
                     SceneManager.LoadScene(loadCurrentLevel);
                     Debug.Log("Void pressed : GAME OVER");
                     break;
-                case KeyData.KeyStatus.Victory:
-                    keyList.Add(currentKey.GetComponent<KeyData>());
-                    if (canPlayLevel)
-                    {
-                        SceneManager.LoadScene(loadNextLevel);
-                        Debug.Log("LEVEL IS COMPLETED !");
-                    }
-                    else
-                    {
-                        SceneManager.LoadScene(loadCurrentLevel);
-                        Debug.Log("Wrong starting key pressed : GAME OVER");
-                    }
-                    break;
                 case KeyData.KeyStatus.Teleporter:
                     keyList.Add(keyData);
                     currentKey.tpOutput.GetComponent<MeshRenderer>().material = currentKey.GetComponent<MeshRenderer>().material;
@@ -141,7 +141,6 @@ public class KeyManager : MonoBehaviour
                     keyList.Add(keyData);
                     if (fakeVictoryKeys[indexFakeVictory].isPressed) //Si l'index actuel est pressé
                     {
-                        Debug.Log("INDEX");
                         if (fakeVictoryKeys[indexFakeVictory+1] == fakeVictoryKeys[fakeVictoryKeys.Length -1]) //Si l'élément suivant dans la liste est le dernier élément de la liste
                         {
                             fakeVictoryKeys[indexFakeVictory+1].GetComponent<MeshRenderer>().material = currentKey.GetComponent<MeshRenderer>().material;
@@ -154,10 +153,19 @@ public class KeyManager : MonoBehaviour
                             fakeVictoryKeys[indexFakeVictory+1].keyStatus = KeyData.KeyStatus.FakeVictory;
                             indexFakeVictory++;
                         }
-
                     }
-
-                    
+                    break;
+                case KeyData.KeyStatus.Victory:
+                    keyList.Add(currentKey.GetComponent<KeyData>());
+                    if (canPlayLevel)
+                    {
+                        StartCoroutine(StartWinEvent());
+                    }
+                    else
+                    {
+                        SceneManager.LoadScene(loadCurrentLevel);
+                        Debug.Log("Wrong starting key pressed : GAME OVER");
+                    }
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -238,6 +246,31 @@ public class KeyManager : MonoBehaviour
             }
             #endregion
         }
+    }
+
+    private IEnumerator StartWinEvent()
+    {
+        //Freeze la touche de victoire pressé sur sa position
+        if (keyList[indexWinEvent].isPressed) //Si l'index actuel est pressé
+        {
+            //Si la key pressé dans la liste est le dernier élément de la liste de touches pressés ET a le state "Victory"
+            if (keyList[indexWinEvent + 1] == keyList[keyList.Count - 1]) 
+            {
+                //Tween
+                keyList[indexWinEvent + 1].transform.DOMoveY(1f, 0.3f).OnComplete(() =>
+                {
+                    keyList[keyList.Count - 1].transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.InElastic);
+                });
+            }
+        }
+        yield return new WaitForSeconds(1f);
+        //Move la plaque vers la droite
+        transitionCube.transform.DOLocalMove(new Vector3(-5, 1f, 0f), levelTransitionSpeed).SetEase(Ease.InBounce); 
+        
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene(loadNextLevel);
+        Debug.Log("LEVEL IS COMPLETED !");
+
     }
 
     private bool CheckIfNeutralized(KeyData currentPressedMine)
