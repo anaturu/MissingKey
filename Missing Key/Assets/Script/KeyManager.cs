@@ -87,6 +87,8 @@ public class KeyManager : MonoBehaviour
             currentKey.OnPressed();
             currentKey.isPressed = true;
             currentKey.transform.DOMove(currentKey.keyPos + new Vector3(0, 0.2f, 0), travelSpeed);
+            currentKey.transform.DORotate(new Vector3(0f, 360f, 0f), 0.2f, RotateMode.LocalAxisAdd);
+
             
             //FOR EVERY ADJACENT KEYS PRESSED
             for (int i = 0; i < currentKey.adjacentKeyDatas.Length; i++) // i = int qui représente chaque touche du clavier adjacente à la currentKey une par une 
@@ -203,7 +205,7 @@ public class KeyManager : MonoBehaviour
             //FOR THE SINGLE KEY RELEASED
             currentKey.isPressed = false;
             currentKey.transform.DOMove(currentKey.keyPos, travelSpeed);
-            
+
             //FOR EVERY ADJACENT KEYS RELEASED
             for (int i = 0; i < currentKey.adjacentKeyDatas.Length; i++) // i = int qui représente chaque touche du clavier adjacente à la currentKey une par une 
             {

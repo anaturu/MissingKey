@@ -42,6 +42,7 @@ public class KeyData : MonoBehaviour
         keyPos = transform.position;
         isPressed = false;
         keyManager = KeyManager.instance;
+        
     }
 
     public void OnPressed()
