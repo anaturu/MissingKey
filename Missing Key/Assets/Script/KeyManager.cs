@@ -51,10 +51,6 @@ public class KeyManager : MonoBehaviour
         canPlayLevel = false;
         gameHasBegun = false;
         _uiManager = UIManager.instance;
-        transitionStartPos = GameObject.Find("StartPos").GetComponent<Transform>();
-        transitionCube.transform.position = transitionStartPos.transform.position;
-        //Move la plaque vers la gauche
-        transitionCube.transform.DOLocalMove(new Vector3(18, 1f, 0f), levelTransitionSpeed).SetEase(Ease.InBounce); 
 
         //Keyboard.current.onTextInput += CheckKeyboardInputPressed;
     }
@@ -256,18 +252,14 @@ public class KeyManager : MonoBehaviour
             //Si la key pressé dans la liste est le dernier élément de la liste de touches pressés ET a le state "Victory"
             if (keyList[indexWinEvent + 1] == keyList[keyList.Count - 1]) 
             {
-                //Tween
-                keyList[indexWinEvent + 1].transform.DOMoveY(1f, 0.3f).OnComplete(() =>
-                {
-                    keyList[keyList.Count - 1].transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.InElastic);
-                });
+                //Tween sur la victory key
+                // keyList[indexWinEvent + 1].transform.DOMoveY(1f, 0.3f).OnComplete(() =>
+                // {
+                //     keyList[keyList.Count - 1].transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.InElastic);
+                // });
             }
         }
-        yield return new WaitForSeconds(1f);
-        //Move la plaque vers la droite
-        transitionCube.transform.DOLocalMove(new Vector3(-5, 1f, 0f), levelTransitionSpeed).SetEase(Ease.InBounce); 
-        
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.5f);
         SceneManager.LoadScene(loadNextLevel);
         Debug.Log("LEVEL IS COMPLETED !");
 
