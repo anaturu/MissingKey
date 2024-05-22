@@ -1270,7 +1270,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 46682a505fca29b48a432cdd2ee68a86, type: 2}
+      objectReference: {fileID: 2100000, guid: 898c0fb0b35f6b8429e46a5622b853fb, type: 2}
     - target: {fileID: 1689518494637856449, guid: efe36158e7ceea341b96efe8fbeab8ec,
         type: 3}
       propertyPath: m_Name
@@ -1284,13 +1284,13 @@ PrefabInstance:
     - target: {fileID: 2955562148335303248, guid: efe36158e7ceea341b96efe8fbeab8ec,
         type: 3}
       propertyPath: keyStatus
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3035444097500229035, guid: efe36158e7ceea341b96efe8fbeab8ec,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 46682a505fca29b48a432cdd2ee68a86, type: 2}
+      objectReference: {fileID: 2100000, guid: 898c0fb0b35f6b8429e46a5622b853fb, type: 2}
     - target: {fileID: 3295387145359618330, guid: efe36158e7ceea341b96efe8fbeab8ec,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1370,7 +1370,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 46682a505fca29b48a432cdd2ee68a86, type: 2}
+      objectReference: {fileID: 2100000, guid: 898c0fb0b35f6b8429e46a5622b853fb, type: 2}
     - target: {fileID: 5069056320880362383, guid: efe36158e7ceea341b96efe8fbeab8ec,
         type: 3}
       propertyPath: keyStatus
@@ -1379,7 +1379,7 @@ PrefabInstance:
     - target: {fileID: 6506970339206013806, guid: efe36158e7ceea341b96efe8fbeab8ec,
         type: 3}
       propertyPath: keyStatus
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6782344632972250646, guid: efe36158e7ceea341b96efe8fbeab8ec,
         type: 3}
@@ -1389,7 +1389,7 @@ PrefabInstance:
     - target: {fileID: 7685736848528395489, guid: efe36158e7ceea341b96efe8fbeab8ec,
         type: 3}
       propertyPath: keyStatus
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8455349474240599710, guid: efe36158e7ceea341b96efe8fbeab8ec,
         type: 3}
