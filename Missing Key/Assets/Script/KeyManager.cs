@@ -24,6 +24,7 @@ public class KeyManager : MonoBehaviour
     [SerializeField] private List<KeyData> keyList = new List<KeyData>();
     
     public KeyData[] fakeVictoryKeys;
+    public KeyData[] blinkKeys;
     public GameObject transitionCube;
     public Transform transitionStartPos;
 
@@ -38,6 +39,10 @@ public class KeyManager : MonoBehaviour
     [SerializeField] private bool canPlayLevel;
     [SerializeField] private bool isAdjacent;
     [SerializeField] private bool gameHasBegun;
+    [SerializeField] private bool blinkLevel;
+    [SerializeField] private Color blinkColor;
+    [SerializeField] private Color blinkWarningColor;
+    [SerializeField] private Color basicColor;
 
     
 
@@ -51,6 +56,11 @@ public class KeyManager : MonoBehaviour
         canPlayLevel = false;
         gameHasBegun = false;
         _uiManager = UIManager.instance;
+        
+        if (blinkLevel)
+        {
+            StartCoroutine(BlinkEvent());
+        }
 
         //Keyboard.current.onTextInput += CheckKeyboardInputPressed;
     }
@@ -60,10 +70,7 @@ public class KeyManager : MonoBehaviour
         PressKeyBehavior();
         ReleaseKeyBehavior();
         
-        
-        
         //CheckKeyboardInputStillPressed();
-
         //return;
 
         if (keyList.Count > 2 && keyList[0].keyStatus != KeyData.KeyStatus.Mine)
@@ -83,7 +90,6 @@ public class KeyManager : MonoBehaviour
             SceneManager.LoadScene(loadCurrentLevel);
             Debug.Log("Wrong starting key pressed : GAME OVER");
         }
-
     }
 
     private void PressKeyBehavior()
@@ -163,6 +169,10 @@ public class KeyManager : MonoBehaviour
                         Debug.Log("Wrong starting key pressed : GAME OVER");
                     }
                     break;
+                case KeyData.KeyStatus.Blink:
+                    keyList.Add(currentKey.GetComponent<KeyData>());
+                    SceneManager.LoadScene(loadCurrentLevel);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -237,6 +247,9 @@ public class KeyManager : MonoBehaviour
                 case KeyData.KeyStatus.FakeVictory:
                     keyList.Remove(currentKey.GetComponent<KeyData>());
                     break;
+                case KeyData.KeyStatus.Blink:
+                    keyList.Remove(currentKey.GetComponent<KeyData>());
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -265,6 +278,41 @@ public class KeyManager : MonoBehaviour
 
     }
 
+    private IEnumerator BlinkEvent()
+    {
+        for (int i = 0; i < blinkKeys.Length; i++)
+        {
+            blinkKeys[i].gameObject.GetComponent<MeshRenderer>().material.DOColor(blinkColor, 0.1f);
+            blinkKeys[i].keyStatus = KeyData.KeyStatus.Blink;
+
+            //GAME OVER
+            if (blinkKeys[i].isPressed)
+            {
+                yield return new WaitForSeconds(2f);
+                SceneManager.LoadScene(loadCurrentLevel);
+            }
+            
+            if (i != blinkKeys.Length - 1) //Début de la liste
+            {
+                blinkKeys[i + 1].gameObject.GetComponent<MeshRenderer>().material.DOColor(blinkWarningColor, 0.1f);
+            }
+            else //Fin de la liste
+            {
+                blinkKeys[0].gameObject.GetComponent<MeshRenderer>().material.DOColor(blinkWarningColor, 0.1f);
+            }
+            yield return new WaitForSeconds(0.3f);
+            
+            blinkKeys[i].gameObject.GetComponent<MeshRenderer>().material.DOColor(basicColor, 0.1f);
+            blinkKeys[i].keyStatus = KeyData.KeyStatus.Basic;
+            yield return new WaitForSeconds(0.1f);
+            
+            if (i == blinkKeys.Length - 1)
+            {
+                StartCoroutine(BlinkEvent());
+            }
+        }
+        
+    }
     private bool CheckIfNeutralized(KeyData currentPressedMine)
     {
         for (int i = 0; i < currentPressedMine.adjacentKeyDatas.Length; i++)

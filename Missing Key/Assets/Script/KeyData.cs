@@ -32,7 +32,8 @@ public class KeyData : MonoBehaviour
         Start,
         Victory,
         Teleporter,
-        FakeVictory
+        FakeVictory,
+        Blink
     }
 
     private void Start()

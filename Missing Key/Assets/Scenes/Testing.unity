@@ -2432,6 +2432,41 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4200751794741831323, guid: 9b9ed2e724a86594a85c70f7b7cf196e,
         type: 3}
+      propertyPath: blinkLevel
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4200751794741831323, guid: 9b9ed2e724a86594a85c70f7b7cf196e,
+        type: 3}
+      propertyPath: basicColor.b
+      value: 0.83137256
+      objectReference: {fileID: 0}
+    - target: {fileID: 4200751794741831323, guid: 9b9ed2e724a86594a85c70f7b7cf196e,
+        type: 3}
+      propertyPath: basicColor.g
+      value: 0.83137256
+      objectReference: {fileID: 0}
+    - target: {fileID: 4200751794741831323, guid: 9b9ed2e724a86594a85c70f7b7cf196e,
+        type: 3}
+      propertyPath: basicColor.r
+      value: 0.83137256
+      objectReference: {fileID: 0}
+    - target: {fileID: 4200751794741831323, guid: 9b9ed2e724a86594a85c70f7b7cf196e,
+        type: 3}
+      propertyPath: blinkColor.b
+      value: 0.8437611
+      objectReference: {fileID: 0}
+    - target: {fileID: 4200751794741831323, guid: 9b9ed2e724a86594a85c70f7b7cf196e,
+        type: 3}
+      propertyPath: blinkColor.g
+      value: 0.25943398
+      objectReference: {fileID: 0}
+    - target: {fileID: 4200751794741831323, guid: 9b9ed2e724a86594a85c70f7b7cf196e,
+        type: 3}
+      propertyPath: blinkColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4200751794741831323, guid: 9b9ed2e724a86594a85c70f7b7cf196e,
+        type: 3}
       propertyPath: loadNextLevel
       value: Testing
       objectReference: {fileID: 0}
@@ -2449,6 +2484,26 @@ PrefabInstance:
         type: 3}
       propertyPath: transitionEndPos
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4200751794741831323, guid: 9b9ed2e724a86594a85c70f7b7cf196e,
+        type: 3}
+      propertyPath: blinkWarningColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4200751794741831323, guid: 9b9ed2e724a86594a85c70f7b7cf196e,
+        type: 3}
+      propertyPath: blinkWarningColor.g
+      value: 0.6839622
+      objectReference: {fileID: 0}
+    - target: {fileID: 4200751794741831323, guid: 9b9ed2e724a86594a85c70f7b7cf196e,
+        type: 3}
+      propertyPath: blinkWarningColor.r
+      value: 0.99551266
+      objectReference: {fileID: 0}
+    - target: {fileID: 4200751794741831323, guid: 9b9ed2e724a86594a85c70f7b7cf196e,
+        type: 3}
+      propertyPath: blinkKeys.Array.size
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4200751794741831323, guid: 9b9ed2e724a86594a85c70f7b7cf196e,
         type: 3}
@@ -2505,6 +2560,31 @@ PrefabInstance:
       propertyPath: _keyDatas.Array.data[9]
       value: 
       objectReference: {fileID: 1846150780}
+    - target: {fileID: 4200751794741831323, guid: 9b9ed2e724a86594a85c70f7b7cf196e,
+        type: 3}
+      propertyPath: blinkKeys.Array.data[0]
+      value: 
+      objectReference: {fileID: 153487311}
+    - target: {fileID: 4200751794741831323, guid: 9b9ed2e724a86594a85c70f7b7cf196e,
+        type: 3}
+      propertyPath: blinkKeys.Array.data[1]
+      value: 
+      objectReference: {fileID: 1690434985}
+    - target: {fileID: 4200751794741831323, guid: 9b9ed2e724a86594a85c70f7b7cf196e,
+        type: 3}
+      propertyPath: blinkKeys.Array.data[2]
+      value: 
+      objectReference: {fileID: 867825734}
+    - target: {fileID: 4200751794741831323, guid: 9b9ed2e724a86594a85c70f7b7cf196e,
+        type: 3}
+      propertyPath: blinkKeys.Array.data[3]
+      value: 
+      objectReference: {fileID: 716896173}
+    - target: {fileID: 4200751794741831323, guid: 9b9ed2e724a86594a85c70f7b7cf196e,
+        type: 3}
+      propertyPath: blinkKeys.Array.data[4]
+      value: 
+      objectReference: {fileID: 2064585507}
     - target: {fileID: 4200751794741831323, guid: 9b9ed2e724a86594a85c70f7b7cf196e,
         type: 3}
       propertyPath: _keyDatas.Array.data[10]
@@ -2672,11 +2752,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 898c0fb0b35f6b8429e46a5622b853fb, type: 2}
+      objectReference: {fileID: 2100000, guid: 46682a505fca29b48a432cdd2ee68a86, type: 2}
     - target: {fileID: 4506762853120230848, guid: efe36158e7ceea341b96efe8fbeab8ec,
         type: 3}
       propertyPath: keyStatus
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4763183926689331499, guid: efe36158e7ceea341b96efe8fbeab8ec,
         type: 3}
