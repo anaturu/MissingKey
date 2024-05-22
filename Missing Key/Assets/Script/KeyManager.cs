@@ -22,12 +22,14 @@ public class KeyManager : MonoBehaviour
     private UIManager _uiManager;
 
     [SerializeField] private List<KeyData> keyList = new List<KeyData>();
+    [SerializeField] private List<KeyData> mineKeys = new List<KeyData>();
     
     public KeyData[] fakeVictoryKeys;
     public KeyData[] blinkKeys;
 
-    public int indexFakeVictory;
-    public int indexWinEvent;
+    [HideInInspector] public int indexMine;
+    [HideInInspector] public int indexFakeVictory;
+    [HideInInspector] public int indexWinEvent;
     
     [SerializeField] private float travelSpeed;
     public float blinkSpeed;
@@ -35,7 +37,7 @@ public class KeyManager : MonoBehaviour
     [CanBeNull] public string loadNextLevel;
     
     [SerializeField] private bool canPlayLevel;
-    [SerializeField] private bool isAdjacent;
+    [SerializeField] private bool mineIsActive;
     [SerializeField] private bool gameHasBegun;
     [SerializeField] private bool blinkLevel;
     [SerializeField] private bool blinkLevelAllAtOnce;
@@ -54,6 +56,7 @@ public class KeyManager : MonoBehaviour
     {
         canPlayLevel = false;
         gameHasBegun = false;
+        mineIsActive = false;
         _uiManager = UIManager.instance;
         
         if (blinkLevel)
@@ -96,7 +99,6 @@ public class KeyManager : MonoBehaviour
             SceneManager.LoadScene(loadCurrentLevel);
             Debug.Log("Wrong starting key pressed : GAME OVER");
         }
-        Debug.Log(currentKey);
 
         if (currentKey.isPressed && currentKey.isBlinking)
         {
@@ -139,10 +141,11 @@ public class KeyManager : MonoBehaviour
                     break;
                 case KeyData.KeyStatus.Mine:
                     keyList.Add(keyData);
-                    for (int i = 0; i < currentKey.adjacentKeyDatas.Length; i++) // Pour toutes les touches adjacentes à la touche pressé
+                    for (int i = 0; i < currentKey.adjacentKeyDatas.Length; i++)
                     {
-                        currentKey.adjacentKeyDatas[i].transform.DORotate(new Vector3(0, 0, 180), 0.2f);
+                        mineKeys.Add(currentKey.adjacentKeyDatas[i]);
                     }
+                    StartCoroutine(MineEvent());
                     break;
                 case KeyData.KeyStatus.Hole:
                     SceneManager.LoadScene(loadCurrentLevel);
@@ -211,17 +214,20 @@ public class KeyManager : MonoBehaviour
             {
                 if (CheckIfNeutralized(keyList[0]))
                 {
+                    StartCoroutine(MineClearEvent());
                     Debug.Log("Toutes les touches adjacentes à la mine ont été enfoncés");
                 }
             }
             
+
+            
+            
+
             if (currentKey.keyStatus == KeyData.KeyStatus.Teleporter)
             {
                 Debug.Log("TP est enfoncé");
             }
         }
-        
-        
     }
     private void ReleaseKeyBehavior()
     {
@@ -251,6 +257,14 @@ public class KeyManager : MonoBehaviour
                     break;
                 case KeyData.KeyStatus.Mine:
                     keyList.Remove(currentKey.GetComponent<KeyData>());
+                    mineKeys.Clear();
+                    currentKey.keyStatus = KeyData.KeyStatus.Basic;
+                    currentKey.GetComponent<MeshRenderer>().material.DOColor(basicColor, 0.1f);
+                    if (mineIsActive)
+                    {
+                        SceneManager.LoadScene(loadCurrentLevel);
+                        Debug.Log("BOOM : GAME OVER");
+                    }
                     break;
                 case KeyData.KeyStatus.Victory:
                     break;
@@ -270,6 +284,32 @@ public class KeyManager : MonoBehaviour
         }
     }
 
+    private IEnumerator MineEvent()
+    {
+        KeyData currentKey = ReturnKeyDataFromInput(FindLastPressedInput());
+        mineIsActive = true;
+
+        foreach (var adjacentKey in currentKey.adjacentKeyDatas)
+        {
+            adjacentKey.transform.DORotate(new Vector3(0, 0, 180), 0.2f);
+            yield return new WaitForSeconds(0.2f);
+        }
+        yield return new WaitForSeconds(1f);
+
+    }
+    private IEnumerator MineClearEvent()
+    {
+        mineIsActive = false;
+        foreach (var adjacentMineKey in mineKeys)
+        {
+            adjacentMineKey.transform.DORotate(new Vector3(0, 0, 0), 0.2f);
+            yield return new WaitForSeconds(0.2f);
+        }
+        yield return new WaitForSeconds(1f);
+        Debug.Log("cb de fois HORS DU FOR?");
+
+
+    }
     private IEnumerator StartWinEvent()
     {
         //Freeze la touche de victoire pressé sur sa position
@@ -290,10 +330,8 @@ public class KeyManager : MonoBehaviour
         Debug.Log("LEVEL IS COMPLETED !");
 
     }
-
     private IEnumerator BlinkEvent()
     {
-        Debug.Log("CA JOE ?");
         for (int i = 0; i < blinkKeys.Length; i++)
         {
             blinkKeys[i].gameObject.GetComponent<MeshRenderer>().material.DOColor(blinkColor, 0.1f);
@@ -327,7 +365,6 @@ public class KeyManager : MonoBehaviour
         }
         
     }
-
     private IEnumerator BlinkEventAllAtOnce()
     {
         foreach (var key in blinkKeys)
