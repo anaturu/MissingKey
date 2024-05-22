@@ -96,7 +96,7 @@ public class KeyManager : MonoBehaviour
             currentKey.OnPressed();
             currentKey.isPressed = true;
             currentKey.transform.DOMove(currentKey.keyPos + new Vector3(0, 0.2f, 0), travelSpeed);
-            currentKey.transform.DORotate(new Vector3(0f, 360f, 0f), 0.2f, RotateMode.LocalAxisAdd);
+            //currentKey.transform.DORotate(new Vector3(0f, 360f, 0f), 0.2f, RotateMode.LocalAxisAdd);
 
             
             //FOR EVERY ADJACENT KEYS PRESSED
