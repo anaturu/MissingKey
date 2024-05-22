@@ -25,14 +25,12 @@ public class KeyManager : MonoBehaviour
     
     public KeyData[] fakeVictoryKeys;
     public KeyData[] blinkKeys;
-    public GameObject transitionCube;
-    public Transform transitionStartPos;
 
     public int indexFakeVictory;
     public int indexWinEvent;
     
     [SerializeField] private float travelSpeed;
-    [SerializeField] private float levelTransitionSpeed;
+    public float blinkSpeed;
     public string loadCurrentLevel;
     [CanBeNull] public string loadNextLevel;
     
@@ -40,6 +38,7 @@ public class KeyManager : MonoBehaviour
     [SerializeField] private bool isAdjacent;
     [SerializeField] private bool gameHasBegun;
     [SerializeField] private bool blinkLevel;
+    [SerializeField] private bool blinkLevelAllAtOnce;
     [SerializeField] private Color blinkColor;
     [SerializeField] private Color blinkWarningColor;
     [SerializeField] private Color basicColor;
@@ -62,11 +61,18 @@ public class KeyManager : MonoBehaviour
             StartCoroutine(BlinkEvent());
         }
 
+        if (blinkLevelAllAtOnce)
+        {
+            StartCoroutine(BlinkEventAllAtOnce());
+        }
+
         //Keyboard.current.onTextInput += CheckKeyboardInputPressed;
     }
 
     public void Update()
     {
+        KeyData currentKey = ReturnKeyDataFromInput(FindLastPressedInput());
+
         PressKeyBehavior();
         ReleaseKeyBehavior();
         
@@ -89,6 +95,13 @@ public class KeyManager : MonoBehaviour
         {
             SceneManager.LoadScene(loadCurrentLevel);
             Debug.Log("Wrong starting key pressed : GAME OVER");
+        }
+        Debug.Log(currentKey);
+
+        if (currentKey.isPressed && currentKey.isBlinking)
+        {
+            SceneManager.LoadScene(loadCurrentLevel);
+            Debug.Log("GAME OVER : Blink to the death");
         }
     }
 
@@ -280,6 +293,7 @@ public class KeyManager : MonoBehaviour
 
     private IEnumerator BlinkEvent()
     {
+        Debug.Log("CA JOE ?");
         for (int i = 0; i < blinkKeys.Length; i++)
         {
             blinkKeys[i].gameObject.GetComponent<MeshRenderer>().material.DOColor(blinkColor, 0.1f);
@@ -300,7 +314,7 @@ public class KeyManager : MonoBehaviour
             {
                 blinkKeys[0].gameObject.GetComponent<MeshRenderer>().material.DOColor(blinkWarningColor, 0.1f);
             }
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(blinkSpeed);
             
             blinkKeys[i].gameObject.GetComponent<MeshRenderer>().material.DOColor(basicColor, 0.1f);
             blinkKeys[i].keyStatus = KeyData.KeyStatus.Basic;
@@ -312,6 +326,33 @@ public class KeyManager : MonoBehaviour
             }
         }
         
+    }
+
+    private IEnumerator BlinkEventAllAtOnce()
+    {
+        foreach (var key in blinkKeys)
+        {
+            key.isBlinking = true;
+            key.gameObject.GetComponent<MeshRenderer>().material.DOColor(blinkColor, 0.1f);
+            key.keyStatus = KeyData.KeyStatus.Blink;
+            if (key.isPressed)
+            {
+                SceneManager.LoadScene(loadCurrentLevel);
+            }
+        }
+        yield return new WaitForSeconds(1f);
+
+        foreach (var key in blinkKeys)
+        {
+            key.isBlinking = false;
+            key.gameObject.GetComponent<MeshRenderer>().material.DOColor(basicColor, 0.1f);
+            key.keyStatus = KeyData.KeyStatus.Basic;
+        }
+        yield return new WaitForSeconds(1f);
+        
+        
+        StartCoroutine(BlinkEventAllAtOnce());
+
     }
     private bool CheckIfNeutralized(KeyData currentPressedMine)
     {

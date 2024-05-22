@@ -19,10 +19,9 @@ public class KeyData : MonoBehaviour
 
     private Transform keyTransform;
     public GameObject tpOutput;
-    
-
 
     public bool isPressed;
+    public bool isBlinking;
 
     public enum KeyStatus //Tous les states spéciaux des touches spéciales
     {
@@ -42,6 +41,7 @@ public class KeyData : MonoBehaviour
             
         keyPos = transform.position;
         isPressed = false;
+        isBlinking = false;
         keyManager = KeyManager.instance;
         
     }
