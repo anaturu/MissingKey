@@ -41,6 +41,7 @@ public class KeyManager : MonoBehaviour
     [SerializeField] private bool gameHasBegun;
     [SerializeField] private bool blinkLevel;
     [SerializeField] private bool blinkLevelAllAtOnce;
+    [SerializeField] private Material fakeVictoryMat;
     [SerializeField] private Color blinkColor;
     [SerializeField] private Color blinkWarningColor;
     [SerializeField] private Color basicColor;
@@ -167,17 +168,18 @@ public class KeyManager : MonoBehaviour
                     break;
                 case KeyData.KeyStatus.FakeVictory:
                     keyList.Add(keyData);
+                    fakeVictoryKeys[indexFakeVictory].GetComponent<MeshRenderer>().material.DOColor(basicColor, 0.1f);
                     if (fakeVictoryKeys[indexFakeVictory].isPressed) //Si l'index actuel est pressé
                     {
                         if (fakeVictoryKeys[indexFakeVictory+1] == fakeVictoryKeys[fakeVictoryKeys.Length -1]) //Si l'élément suivant dans la liste est le dernier élément de la liste
                         {
-                            fakeVictoryKeys[indexFakeVictory+1].GetComponent<MeshRenderer>().material = currentKey.GetComponent<MeshRenderer>().material;
+                            fakeVictoryKeys[indexFakeVictory+1].GetComponent<MeshRenderer>().material = fakeVictoryMat;
                             fakeVictoryKeys[indexFakeVictory+1].keyStatus = KeyData.KeyStatus.Victory;
                             Debug.Log("Last Touch");
                         }
                         else
                         {
-                            fakeVictoryKeys[indexFakeVictory+1].GetComponent<MeshRenderer>().material = currentKey.GetComponent<MeshRenderer>().material;
+                            fakeVictoryKeys[indexFakeVictory+1].GetComponent<MeshRenderer>().material = fakeVictoryMat;
                             fakeVictoryKeys[indexFakeVictory+1].keyStatus = KeyData.KeyStatus.FakeVictory;
                             indexFakeVictory++;
                         }
@@ -264,6 +266,8 @@ public class KeyManager : MonoBehaviour
                     break;
                 case KeyData.KeyStatus.Start:
                     keyList.Remove(currentKey.GetComponent<KeyData>());
+                    currentKey.keyStatus = KeyData.KeyStatus.Basic;
+                    currentKey.GetComponent<MeshRenderer>().material.DOColor(basicColor, 0.1f);
                     break;
                 case KeyData.KeyStatus.Mine:
                     keyList.Remove(currentKey.GetComponent<KeyData>());
@@ -283,6 +287,7 @@ public class KeyManager : MonoBehaviour
                     break;
                 case KeyData.KeyStatus.FakeVictory:
                     keyList.Remove(currentKey.GetComponent<KeyData>());
+                    currentKey.keyStatus = KeyData.KeyStatus.Basic;
                     break;
                 case KeyData.KeyStatus.Blink:
                     keyList.Remove(currentKey.GetComponent<KeyData>());
@@ -316,9 +321,6 @@ public class KeyManager : MonoBehaviour
             yield return new WaitForSeconds(0.2f);
         }
         yield return new WaitForSeconds(1f);
-        Debug.Log("cb de fois HORS DU FOR?");
-
-
     }
     private IEnumerator StartWinEvent()
     {
