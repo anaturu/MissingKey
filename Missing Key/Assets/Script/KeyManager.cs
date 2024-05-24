@@ -59,6 +59,16 @@ public class KeyManager : MonoBehaviour
         mineIsActive = false;
         _uiManager = UIManager.instance;
         
+        for (int i = 0; i < _keyDatas.Length; i++)
+        {
+            _keyDatas[i].transform.DOScale(Vector3.zero, 0f);
+        }
+        
+        for (int i = 0; i < _keyDatas.Length; i++)
+        {
+            _keyDatas[i].transform.DOScale(Vector3.one, Random.Range(0.5f, 1.5f)).SetEase(Ease.OutBounce);
+        }
+        
         if (blinkLevel)
         {
             StartCoroutine(BlinkEvent());
@@ -319,13 +329,17 @@ public class KeyManager : MonoBehaviour
             if (keyList[indexWinEvent + 1] == keyList[keyList.Count - 1]) 
             {
                 //Tween sur la victory key
-                // keyList[indexWinEvent + 1].transform.DOMoveY(1f, 0.3f).OnComplete(() =>
-                // {
-                //     keyList[keyList.Count - 1].transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.InElastic);
-                // });
+                keyList[indexWinEvent + 1].transform.DORotate(new Vector3(0, 360, 0), 0.3f, RotateMode.FastBeyond360);
             }
         }
         yield return new WaitForSeconds(0.5f);
+        
+        //Make all keys disappear
+        for (int i = 0; i < _keyDatas.Length; i++)
+        {
+            _keyDatas[i].transform.DOScale(Vector3.zero, Random.Range(0.5f, 1.5f)).SetEase(Ease.InBounce);
+        }
+        yield return new WaitForSeconds(3f);
         SceneManager.LoadScene(loadNextLevel);
         Debug.Log("LEVEL IS COMPLETED !");
 
