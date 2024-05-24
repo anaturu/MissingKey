@@ -72,13 +72,22 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   keyList: []
+  mineKeys: []
   fakeVictoryKeys: []
-  transitionCube: {fileID: 0}
+  blinkKeys: []
+  indexMine: 0
   indexFakeVictory: 0
   indexWinEvent: 0
   travelSpeed: 0.2
-  levelTransitionSpeed: 1
+  blinkSpeed: 0
   loadCurrentLevel: 
   loadNextLevel: 
   canPlayLevel: 0
-  isAdjacent: 0
+  mineIsActive: 0
+  gameHasBegun: 0
+  blinkLevel: 0
+  blinkLevelAllAtOnce: 0
+  blinkColor: {r: 1, g: 0.25943398, b: 0.8437611, a: 0}
+  blinkWarningColor: {r: 0.99551266, g: 0.6839622, b: 1, a: 0}
+  basicColor: {r: 0.83137256, g: 0.83137256, b: 0.83137256, a: 0}
+  fakeVictoryDoneColor: {r: 1, g: 0.504717, b: 0.504717, a: 0}
