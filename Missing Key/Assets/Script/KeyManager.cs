@@ -42,9 +42,9 @@ public class KeyManager : MonoBehaviour
     [SerializeField] private bool blinkLevel;
     [SerializeField] private bool blinkLevelAllAtOnce;
     [SerializeField] private Material fakeVictoryMat;
+    [SerializeField] private Material basicMat;
     [SerializeField] private Color blinkColor;
     [SerializeField] private Color blinkWarningColor;
-    [SerializeField] private Color basicColor;
 
     
 
@@ -168,7 +168,7 @@ public class KeyManager : MonoBehaviour
                     break;
                 case KeyData.KeyStatus.FakeVictory:
                     keyList.Add(keyData);
-                    fakeVictoryKeys[indexFakeVictory].GetComponent<MeshRenderer>().material.DOColor(basicColor, 0.1f);
+                    fakeVictoryKeys[indexFakeVictory].GetComponent<MeshRenderer>().material = basicMat;
                     if (fakeVictoryKeys[indexFakeVictory].isPressed) //Si l'index actuel est pressé
                     {
                         if (fakeVictoryKeys[indexFakeVictory+1] == fakeVictoryKeys[fakeVictoryKeys.Length -1]) //Si l'élément suivant dans la liste est le dernier élément de la liste
@@ -267,13 +267,13 @@ public class KeyManager : MonoBehaviour
                 case KeyData.KeyStatus.Start:
                     keyList.Remove(currentKey.GetComponent<KeyData>());
                     currentKey.keyStatus = KeyData.KeyStatus.Basic;
-                    currentKey.GetComponent<MeshRenderer>().material.DOColor(basicColor, 0.1f);
+                    currentKey.GetComponent<MeshRenderer>().material = basicMat;
                     break;
                 case KeyData.KeyStatus.Mine:
                     keyList.Remove(currentKey.GetComponent<KeyData>());
                     mineKeys.Clear();
                     currentKey.keyStatus = KeyData.KeyStatus.Basic;
-                    currentKey.GetComponent<MeshRenderer>().material.DOColor(basicColor, 0.1f);
+                    currentKey.GetComponent<MeshRenderer>().material = basicMat;
                     if (mineIsActive)
                     {
                         SceneManager.LoadScene(loadCurrentLevel);
@@ -370,7 +370,7 @@ public class KeyManager : MonoBehaviour
             }
             yield return new WaitForSeconds(blinkSpeed);
             
-            blinkKeys[i].gameObject.GetComponent<MeshRenderer>().material.DOColor(basicColor, 0.1f);
+            blinkKeys[i].gameObject.GetComponent<MeshRenderer>().material = basicMat;
             blinkKeys[i].keyStatus = KeyData.KeyStatus.Basic;
             yield return new WaitForSeconds(0.1f);
             
@@ -398,7 +398,7 @@ public class KeyManager : MonoBehaviour
         foreach (var key in blinkKeys)
         {
             key.isBlinking = false;
-            key.gameObject.GetComponent<MeshRenderer>().material.DOColor(basicColor, 0.1f);
+            key.gameObject.GetComponent<MeshRenderer>().material = basicMat;
             key.keyStatus = KeyData.KeyStatus.Basic;
         }
         yield return new WaitForSeconds(1f);

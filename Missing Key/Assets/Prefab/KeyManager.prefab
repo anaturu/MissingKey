@@ -88,6 +88,6 @@ MonoBehaviour:
   blinkLevel: 0
   blinkLevelAllAtOnce: 0
   fakeVictoryMat: {fileID: 2100000, guid: 28c7ac982453e0841bb8cccdc6389aaa, type: 2}
+  basicMat: {fileID: 2100000, guid: 46682a505fca29b48a432cdd2ee68a86, type: 2}
   blinkColor: {r: 1, g: 0.25943398, b: 0.8437611, a: 0}
   blinkWarningColor: {r: 0.99551266, g: 0.6839622, b: 1, a: 0}
-  basicColor: {r: 0.83137256, g: 0.83137256, b: 0.83137256, a: 0}
