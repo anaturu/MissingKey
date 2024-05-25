@@ -334,14 +334,14 @@ public class KeyManager : MonoBehaviour
                 keyList[indexWinEvent + 1].transform.DORotate(new Vector3(0, 360, 0), 0.3f, RotateMode.FastBeyond360);
             }
         }
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.2f);
         
         //Make all keys disappear
         for (int i = 0; i < _keyDatas.Length; i++)
         {
             _keyDatas[i].transform.DOScale(Vector3.zero, Random.Range(0.5f, 1.5f)).SetEase(Ease.InBounce);
         }
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1.5f);
         SceneManager.LoadScene(loadNextLevel);
         Debug.Log("LEVEL IS COMPLETED !");
 
