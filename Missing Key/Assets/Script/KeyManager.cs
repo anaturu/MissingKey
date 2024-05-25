@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 using DG.Tweening;
 using JetBrains.Annotations;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.LowLevel;
@@ -27,7 +28,6 @@ public class KeyManager : MonoBehaviour
     public KeyData[] fakeVictoryKeys;
     public KeyData[] blinkKeys;
 
-    [HideInInspector] public int indexMine;
     [HideInInspector] public int indexFakeVictory;
     [HideInInspector] public int indexWinEvent;
     
@@ -35,12 +35,14 @@ public class KeyManager : MonoBehaviour
     public float blinkSpeed;
     public string loadCurrentLevel;
     [CanBeNull] public string loadNextLevel;
+
     
     [SerializeField] private bool canPlayLevel;
     [SerializeField] private bool mineIsActive;
     [SerializeField] private bool gameHasBegun;
     [SerializeField] private bool blinkLevel;
     [SerializeField] private bool blinkLevelAllAtOnce;
+
     [SerializeField] private Material fakeVictoryMat;
     [SerializeField] private Material basicMat;
     [SerializeField] private Color blinkColor;
@@ -128,15 +130,7 @@ public class KeyManager : MonoBehaviour
             currentKey.OnPressed();
             currentKey.isPressed = true;
             currentKey.transform.DOMove(currentKey.keyPos + new Vector3(0, 0.2f, 0), travelSpeed);
-            //currentKey.transform.DORotate(new Vector3(0f, 360f, 0f), 0.2f, RotateMode.LocalAxisAdd);
 
-            
-            //FOR EVERY ADJACENT KEYS PRESSED
-            for (int i = 0; i < currentKey.adjacentKeyDatas.Length; i++) // i = int qui représente chaque touche du clavier adjacente à la currentKey une par une 
-            {
-                
-            }
-            
             #region Special Keys
 
             var keyData = currentKey.GetComponent<KeyData>();
@@ -231,10 +225,6 @@ public class KeyManager : MonoBehaviour
                 }
             }
             
-
-            
-            
-
             if (currentKey.keyStatus == KeyData.KeyStatus.Teleporter)
             {
                 Debug.Log("TP est enfoncé");
@@ -298,7 +288,6 @@ public class KeyManager : MonoBehaviour
             #endregion
         }
     }
-
     private IEnumerator MineEvent()
     {
         KeyData currentKey = ReturnKeyDataFromInput(FindLastPressedInput());
@@ -339,9 +328,9 @@ public class KeyManager : MonoBehaviour
         //Make all keys disappear
         for (int i = 0; i < _keyDatas.Length; i++)
         {
-            _keyDatas[i].transform.DOScale(Vector3.zero, Random.Range(0.5f, 1.5f)).SetEase(Ease.InBounce);
+            _keyDatas[i].transform.DOScale(Vector3.zero, Random.Range(0.5f, 1f)).SetEase(Ease.InBounce);
         }
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1f);
         SceneManager.LoadScene(loadNextLevel);
         Debug.Log("LEVEL IS COMPLETED !");
 
@@ -429,7 +418,6 @@ public class KeyManager : MonoBehaviour
         }
         return false;
     }
-
     public KeyData ReturnKeyDataFromInput(KeyCode keyCode) //Permet de traduire keyCode en KeyData (script)
     {
         KeyData value = new KeyData();
