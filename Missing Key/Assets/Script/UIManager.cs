@@ -87,7 +87,6 @@ public class UIManager : MonoBehaviour
     public void PauseGame()
     {
         pauseMenu.SetActive(true); //Active Menu Pause
-        Time.timeScale = 0f;
         Debug.Log("PAUSE");
         
         isPaused = true;

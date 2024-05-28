@@ -358,6 +358,7 @@ public class KeyManager : MonoBehaviour
     private IEnumerator LoadingLevelEvent()
     {
         KeyData currentKey = ReturnKeyDataFromInput(FindLastPressedInput());
+        
         Debug.Log("1");
         //Freeze la touche de victoire pressé sur sa position
         if (keyList[0].isPressed) //Si l'index actuel est pressé
@@ -366,6 +367,7 @@ public class KeyManager : MonoBehaviour
             keyList[0].transform.DORotate(new Vector3(0, 360, 0), 0.3f, RotateMode.FastBeyond360);
             Debug.Log("TWEEN ROTATE");
         }
+        Debug.Log(Time.timeScale);
         yield return new WaitForSeconds(0.2f);
         Debug.Log("2");
         //Make all keys disappear
@@ -376,6 +378,7 @@ public class KeyManager : MonoBehaviour
 
         }
         yield return new WaitForSeconds(1f);
+        instance = null;
         SceneManager.LoadScene(currentKey.levelToLoad);
         Debug.Log("3");
 
