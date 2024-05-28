@@ -77,10 +77,10 @@ public class UIManager : MonoBehaviour
     {
         pauseMenu.SetActive(false); //Désactive Menu Pause
         optionsMenu.SetActive(true); //Active Menu Options
-
         isLevelSelector = true;
         isPaused = false;
-
+        
+        SceneManager.LoadScene("Level Selector");
     }
 
     

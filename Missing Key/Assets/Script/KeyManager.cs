@@ -21,6 +21,7 @@ public class KeyManager : MonoBehaviour
     
     public static KeyManager instance;
     private UIManager _uiManager;
+    private LevelManager _levelManager;
 
     [SerializeField] private List<KeyData> keyList = new List<KeyData>();
     [SerializeField] private List<KeyData> mineKeys = new List<KeyData>();
@@ -43,6 +44,7 @@ public class KeyManager : MonoBehaviour
     [SerializeField] private bool gameHasBegun;
     [SerializeField] private bool blinkLevel;
     [SerializeField] private bool blinkLevelAllAtOnce;
+    [SerializeField] private bool levelSelectorScene;
 
     [SerializeField] private Material fakeVictoryMat;
     [SerializeField] private Material basicMat;
@@ -62,6 +64,7 @@ public class KeyManager : MonoBehaviour
         gameHasBegun = false;
         mineIsActive = false;
         _uiManager = UIManager.instance;
+        _levelManager = LevelManager.instance;
         
         for (int i = 0; i < _keyDatas.Length; i++)
         {
@@ -83,6 +86,10 @@ public class KeyManager : MonoBehaviour
             StartCoroutine(BlinkEventAllAtOnce());
         }
 
+        if (currentLevelNumber == 99)
+        {
+            _levelManager.UpdateKeys();
+        }
         //Keyboard.current.onTextInput += CheckKeyboardInputPressed;
     }
 
@@ -96,28 +103,31 @@ public class KeyManager : MonoBehaviour
         //CheckKeyboardInputStillPressed();
         //return;
 
-        if (keyList.Count > 2 && keyList[0].keyStatus != KeyData.KeyStatus.Mine)
+        if (!levelSelectorScene)
         {
-            SceneManager.LoadScene(loadCurrentLevel);
-            Debug.Log("More than 2 keys : GAME OVER");
-        }
+            if (keyList.Count > 2 && keyList[0].keyStatus != KeyData.KeyStatus.Mine)
+            {
+                SceneManager.LoadScene(loadCurrentLevel);
+                Debug.Log("More than 2 keys : GAME OVER");
+            }
 
-        if (keyList.Count == 0 && canPlayLevel)
-        {
-            SceneManager.LoadScene(loadCurrentLevel);
-            Debug.Log("0 keys held down : GAME OVER");
-        }
+            if (keyList.Count == 0 && canPlayLevel)
+            {
+                SceneManager.LoadScene(loadCurrentLevel);
+                Debug.Log("0 keys held down : GAME OVER");
+            }
         
-        if (keyList.Count == 1 && !canPlayLevel)
-        {
-            SceneManager.LoadScene(loadCurrentLevel);
-            Debug.Log("Wrong starting key pressed : GAME OVER");
-        }
+            if (keyList.Count == 1 && !canPlayLevel)
+            {
+                SceneManager.LoadScene(loadCurrentLevel);
+                Debug.Log("Wrong starting key pressed : GAME OVER");
+            }
 
-        if (currentKey.isPressed && currentKey.isBlinking)
-        {
-            SceneManager.LoadScene(loadCurrentLevel);
-            Debug.Log("GAME OVER : Blink to the death");
+            if (currentKey.isPressed && currentKey.isBlinking)
+            {
+                SceneManager.LoadScene(loadCurrentLevel);
+                Debug.Log("GAME OVER : Blink to the death");
+            }
         }
     }
 
@@ -206,7 +216,7 @@ public class KeyManager : MonoBehaviour
             
             #endregion
             
-            if(keyList.Count > 1)
+            if(keyList.Count > 1 && !levelSelectorScene)
             {
                 //check si la touche est adjacente ou non (currentKey étant toujours la touche la plus récente),
                 //et keyList[0] étant la plus ancienne
@@ -287,6 +297,9 @@ public class KeyManager : MonoBehaviour
                 case KeyData.KeyStatus.Blink:
                     keyList.Remove(currentKey.GetComponent<KeyData>());
                     break;
+                case KeyData.KeyStatus.LoadLevel:
+                    keyList.Remove(currentKey.GetComponent<KeyData>());
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -329,6 +342,8 @@ public class KeyManager : MonoBehaviour
             }
         }
         yield return new WaitForSeconds(0.2f);
+        _levelManager.levelIsCompleted[currentLevelNumber - 1] = true;
+        
         
         //Make all keys disappear
         for (int i = 0; i < _keyDatas.Length; i++)
@@ -343,23 +358,27 @@ public class KeyManager : MonoBehaviour
     private IEnumerator LoadingLevelEvent()
     {
         KeyData currentKey = ReturnKeyDataFromInput(FindLastPressedInput());
-
+        Debug.Log("1");
         //Freeze la touche de victoire pressé sur sa position
-        if (keyList[indexWinEvent].isPressed) //Si l'index actuel est pressé
+        if (keyList[0].isPressed) //Si l'index actuel est pressé
         {
             //Tween sur la victory key
-            keyList[indexWinEvent].transform.DORotate(new Vector3(0, 360, 0), 0.3f, RotateMode.FastBeyond360);
+            keyList[0].transform.DORotate(new Vector3(0, 360, 0), 0.3f, RotateMode.FastBeyond360);
+            Debug.Log("TWEEN ROTATE");
         }
         yield return new WaitForSeconds(0.2f);
-        
+        Debug.Log("2");
         //Make all keys disappear
         for (int i = 0; i < _keyDatas.Length; i++)
         {
             _keyDatas[i].transform.DOScale(Vector3.zero, Random.Range(0.5f, 1f)).SetEase(Ease.InBounce);
+            Debug.Log("TWEEN SCALE");
+
         }
         yield return new WaitForSeconds(1f);
         SceneManager.LoadScene(currentKey.levelToLoad);
-        Debug.Log("LEVEL IS LOADED !");
+        Debug.Log("3");
+
     }
     private IEnumerator BlinkEvent()
     {

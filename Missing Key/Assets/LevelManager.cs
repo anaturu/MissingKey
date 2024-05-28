@@ -5,28 +5,44 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
+    public static LevelManager instance;
+
     private KeyManager keyManager;
-    public int currentLevel;
     public bool[] levelIsCompleted;
+    public Material matCompletedColor;
+    public Material matUncompletedColor;
     public Color completedColor;
     public Color uncompletedColor;
-    void Start()
+    
+    private void Awake()
+    {
+        #region Singleton
+        if (instance != null)
+        {
+            Debug.Log("There is more than one instance of this singleton !!!");
+            Destroy(gameObject);
+            return;
+        }
+        instance = this;
+        #endregion
+    }
+
+    public void UpdateKeys()
     {
         keyManager = KeyManager.instance;
         DontDestroyOnLoad(gameObject);
 
         for (int i = 0; i < keyManager._keyDatas.Length; i++)
         {
-            if (levelIsCompleted[i])
+            if (levelIsCompleted[i]) //Si index est true
             {
-                keyManager._keyDatas[i].gameObject.GetComponent<MeshRenderer>().material.DOColor(completedColor, 0.1f);
+                keyManager._keyDatas[i].gameObject.GetComponent<MeshRenderer>().material = matCompletedColor;
             }
             else
             {
-                keyManager._keyDatas[i].gameObject.GetComponent<MeshRenderer>().material.DOColor(uncompletedColor, 0.1f);
+                keyManager._keyDatas[i].gameObject.GetComponent<MeshRenderer>().material = matUncompletedColor;
             }
         }
-        
     }
     
     
