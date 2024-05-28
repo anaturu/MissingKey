@@ -19,6 +19,7 @@ public class KeyData : MonoBehaviour
 
     private Transform keyTransform;
     public GameObject tpOutput;
+    public string levelToLoad;
 
     public bool isPressed;
     public bool isBlinking;
@@ -32,7 +33,8 @@ public class KeyData : MonoBehaviour
         Victory,
         Teleporter,
         FakeVictory,
-        Blink
+        Blink,
+        LoadLevel
     }
 
     private void Start()

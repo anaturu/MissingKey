@@ -16,7 +16,7 @@ using UnityEngine.SceneManagement;
 public class KeyManager : MonoBehaviour
 {
     //DONT TOUCH THESE
-    [SerializeField] private KeyData[] _keyDatas; //Array du script "KeyData"
+    [SerializeField] public KeyData[] _keyDatas; //Array du script "KeyData"
     private readonly Array keyCodes = Enum.GetValues(typeof(KeyCode)); //Array contenant TOUTES les touches du clavier
     
     public static KeyManager instance;
@@ -30,6 +30,7 @@ public class KeyManager : MonoBehaviour
 
     [HideInInspector] public int indexFakeVictory;
     [HideInInspector] public int indexWinEvent;
+    [SerializeField] public int currentLevelNumber;
     
     [SerializeField] private float travelSpeed;
     public float blinkSpeed;
@@ -195,6 +196,10 @@ public class KeyManager : MonoBehaviour
                     keyList.Add(currentKey.GetComponent<KeyData>());
                     SceneManager.LoadScene(loadCurrentLevel);
                     break;
+                case KeyData.KeyStatus.LoadLevel:
+                    keyList.Add(currentKey.GetComponent<KeyData>());
+                    StartCoroutine(LoadingLevelEvent());
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -334,6 +339,27 @@ public class KeyManager : MonoBehaviour
         SceneManager.LoadScene(loadNextLevel);
         Debug.Log("LEVEL IS COMPLETED !");
 
+    }
+    private IEnumerator LoadingLevelEvent()
+    {
+        KeyData currentKey = ReturnKeyDataFromInput(FindLastPressedInput());
+
+        //Freeze la touche de victoire pressé sur sa position
+        if (keyList[indexWinEvent].isPressed) //Si l'index actuel est pressé
+        {
+            //Tween sur la victory key
+            keyList[indexWinEvent].transform.DORotate(new Vector3(0, 360, 0), 0.3f, RotateMode.FastBeyond360);
+        }
+        yield return new WaitForSeconds(0.2f);
+        
+        //Make all keys disappear
+        for (int i = 0; i < _keyDatas.Length; i++)
+        {
+            _keyDatas[i].transform.DOScale(Vector3.zero, Random.Range(0.5f, 1f)).SetEase(Ease.InBounce);
+        }
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene(currentKey.levelToLoad);
+        Debug.Log("LEVEL IS LOADED !");
     }
     private IEnumerator BlinkEvent()
     {
