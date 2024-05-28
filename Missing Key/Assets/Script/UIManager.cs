@@ -12,6 +12,9 @@ public class UIManager : MonoBehaviour
     
     public GameObject pauseMenu;
     public GameObject optionsMenu;
+
+    public float targetTime;
+    public TextMeshProUGUI timerText;
     
     public bool isPaused;
     public bool isLevelSelector;
@@ -30,10 +33,17 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         pauseMenu.SetActive(false);
+        timerText = GameObject.Find("Timer").GetComponent<TextMeshProUGUI>();
+
+        
+
     }
 
     private void Update()
     {
+        targetTime -= Time.deltaTime;
+        timerText.text = targetTime + "";
+        
         if (!isLevelSelector) //Si le menu LevelSelector est fermé
         {
             if (Input.GetKeyDown(KeyCode.Escape))
