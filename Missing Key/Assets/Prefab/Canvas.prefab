@@ -675,9 +675,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseMenu: {fileID: 3989036750390540343}
   optionsMenu: {fileID: 2498438365507085353}
+  timeRemaining: 0
   timerText: {fileID: 0}
   isPaused: 0
   isLevelSelector: 0
+  timerIsRunning: 0
 --- !u!1 &7967437686826026296
 GameObject:
   m_ObjectHideFlags: 0
@@ -743,7 +745,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 00:01
+  m_text: 00:00
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 73e5306172548744cb83531c1546d332, type: 2}
   m_sharedMaterial: {fileID: -8323179528317989871, guid: 73e5306172548744cb83531c1546d332,

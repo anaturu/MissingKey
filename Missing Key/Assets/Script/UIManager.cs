@@ -9,15 +9,17 @@ using UnityEngine.SceneManagement;
 public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
+    private KeyManager _keyManager;
     
     public GameObject pauseMenu;
     public GameObject optionsMenu;
 
-    public float targetTime;
+    public float timeRemaining;
     public TextMeshProUGUI timerText;
     
     public bool isPaused;
     public bool isLevelSelector;
+    public bool timerIsRunning;
     private void Awake()
     {
         #region Singleton
@@ -32,17 +34,29 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+        _keyManager = KeyManager.instance;
         pauseMenu.SetActive(false);
         timerText = GameObject.Find("Timer").GetComponent<TextMeshProUGUI>();
-
-        
-
+        DisplayTime(timeRemaining - 1);
     }
 
     private void Update()
     {
-        targetTime -= Time.deltaTime;
-        timerText.text = targetTime + "";
+        if (timerIsRunning)
+        {
+            if (timeRemaining > 0)
+            {
+                timeRemaining -= Time.deltaTime;
+                DisplayTime(timeRemaining);
+            }
+            else
+            {
+                Debug.Log("Time has run out!");
+                timeRemaining = 0;
+                timerIsRunning = false;
+                SceneManager.LoadScene(_keyManager.loadCurrentLevel);
+            }
+        }
         
         if (!isLevelSelector) //Si le menu LevelSelector est fermé
         {
@@ -73,6 +87,16 @@ public class UIManager : MonoBehaviour
                 }
             }
         }
+    }
+    
+    void DisplayTime(float timeToDisplay)
+    {
+        timeToDisplay += 1;
+
+        float minutes = Mathf.FloorToInt(timeToDisplay / 60); 
+        float seconds = Mathf.FloorToInt(timeToDisplay % 60);
+        
+        timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
     
     public void ButtonResumeGame()

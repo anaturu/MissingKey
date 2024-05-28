@@ -154,6 +154,7 @@ public class KeyManager : MonoBehaviour
                 case KeyData.KeyStatus.Start:
                     canPlayLevel = true;
                     keyList.Add(keyData);
+                    _uiManager.timerIsRunning = true; // Start timer
                     break;
                 case KeyData.KeyStatus.Mine:
                     keyList.Add(keyData);
@@ -331,6 +332,9 @@ public class KeyManager : MonoBehaviour
     }
     private IEnumerator StartWinEvent()
     {
+        //Stop timer
+        _uiManager.timerIsRunning = false; 
+        
         //Freeze la touche de victoire pressé sur sa position
         if (keyList[indexWinEvent].isPressed) //Si l'index actuel est pressé
         {
