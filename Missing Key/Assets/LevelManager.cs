@@ -38,10 +38,6 @@ public class LevelManager : MonoBehaviour
             {
                 keyManager._keyDatas[i].gameObject.GetComponent<MeshRenderer>().material = matCompletedColor;
             }
-            else
-            {
-                keyManager._keyDatas[i].gameObject.GetComponent<MeshRenderer>().material = matUncompletedColor;
-            }
         }
     }
     
