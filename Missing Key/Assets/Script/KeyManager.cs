@@ -41,7 +41,7 @@ public class KeyManager : MonoBehaviour
     
     [SerializeField] private bool canPlayLevel;
     [SerializeField] private bool mineIsActive;
-    [SerializeField] private bool gameHasBegun;
+    [SerializeField] public bool timerLevel;
     [SerializeField] private bool blinkLevel;
     [SerializeField] private bool blinkLevelAllAtOnce;
     [SerializeField] private bool levelSelectorScene;
@@ -61,7 +61,6 @@ public class KeyManager : MonoBehaviour
     private void Start()
     {
         canPlayLevel = false;
-        gameHasBegun = false;
         mineIsActive = false;
         _uiManager = UIManager.instance;
         _levelManager = LevelManager.instance;
@@ -154,7 +153,10 @@ public class KeyManager : MonoBehaviour
                 case KeyData.KeyStatus.Start:
                     canPlayLevel = true;
                     keyList.Add(keyData);
-                    _uiManager.timerIsRunning = true; // Start timer
+                    if (timerLevel)
+                    {
+                        _uiManager.timerIsRunning = true; //Start timer
+                    }
                     break;
                 case KeyData.KeyStatus.Mine:
                     keyList.Add(keyData);
@@ -332,8 +334,11 @@ public class KeyManager : MonoBehaviour
     }
     private IEnumerator StartWinEvent()
     {
-        //Stop timer
-        _uiManager.timerIsRunning = false; 
+        if (timerLevel)
+        {
+            //Stop timer
+            _uiManager.timerIsRunning = false; 
+        }
         
         //Freeze la touche de victoire pressé sur sa position
         if (keyList[indexWinEvent].isPressed) //Si l'index actuel est pressé

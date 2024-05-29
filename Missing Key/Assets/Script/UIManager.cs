@@ -42,21 +42,29 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
-        if (timerIsRunning)
+        if (_keyManager.timerLevel)
         {
-            if (timeRemaining > 0)
+            if (timerIsRunning)
             {
-                timeRemaining -= Time.deltaTime;
-                DisplayTime(timeRemaining);
-            }
-            else
-            {
-                Debug.Log("Time has run out!");
-                timeRemaining = 0;
-                timerIsRunning = false;
-                SceneManager.LoadScene(_keyManager.loadCurrentLevel);
+                if (timeRemaining > 0)
+                {
+                    timeRemaining -= Time.deltaTime;
+                    DisplayTime(timeRemaining);
+                }
+                else
+                {
+                    Debug.Log("Time has run out!");
+                    timeRemaining = 0;
+                    timerIsRunning = false;
+                    SceneManager.LoadScene(_keyManager.loadCurrentLevel);
+                }
             }
         }
+        else
+        {
+            timerText.enabled = false;
+        }
+        
         
         if (!isLevelSelector) //Si le menu LevelSelector est fermé
         {
