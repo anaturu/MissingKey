@@ -99,12 +99,12 @@ public class KeyManager : MonoBehaviour
     public void Update()
     {
         KeyData currentKey = ReturnKeyDataFromInput(FindLastPressedInput());
-
-        PressKeyBehavior();
-        ReleaseKeyBehavior();
         
         //CheckKeyboardInputStillPressed();
         //return;
+        
+        PressKeyBehavior();
+        ReleaseKeyBehavior();
 
         if (!levelSelectorScene)
         {
@@ -175,6 +175,7 @@ public class KeyManager : MonoBehaviour
                     StartCoroutine(MineEvent());
                     break;
                 case KeyData.KeyStatus.Hole:
+                    _sceneUIBetween.StartCoroutine(_sceneUIBetween.DeathTextEvent(5));
                     SceneManager.LoadScene(loadCurrentLevel);
                     Debug.Log("Void pressed : GAME OVER");
                     break;
@@ -238,7 +239,9 @@ public class KeyManager : MonoBehaviour
                 }
                 else
                 {
-                    _sceneUIBetween.StartCoroutine(_sceneUIBetween.DeathTextEvent(2));
+                    if(keyList.Count <= 2)
+                        _sceneUIBetween.StartCoroutine(_sceneUIBetween.DeathTextEvent(2));
+                    
                     SceneManager.LoadScene(loadCurrentLevel);
                     Debug.Log("Pressed key is not adjacent : GAME OVER");
                 }
@@ -318,21 +321,6 @@ public class KeyManager : MonoBehaviour
             }
             #endregion
         }
-    }
-
-    private IEnumerator TooMuchKeyDefeat()
-    {
-        KeyData currentKey = ReturnKeyDataFromInput(FindLastPressedInput());
-        
-        Debug.Log("1");
-        for (int i = 0; i < keyList.Count; i++)
-        {
-            keyList[i].transform.DOMove(currentKey.keyPos + new Vector3(0, 0.4f, 0), travelSpeed);
-            Debug.Log("2");
-        }
-        yield return new WaitForSeconds(2f);
-        Debug.Log("3");
-        //SceneManager.LoadScene(loadCurrentLevel);
     }
     private IEnumerator MineEvent()
     {

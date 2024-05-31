@@ -14,7 +14,7 @@ public class SceneUIBetween : MonoBehaviour
     public float appearDeathTextTime;
     public float disappearDeathTextTime;
     public TextMeshProUGUI[] deathTexts;
-    
+    public bool deathTextOn;
     private void Awake()
     {
         #region Singleton
@@ -40,9 +40,14 @@ public class SceneUIBetween : MonoBehaviour
 
     public IEnumerator DeathTextEvent(int index)
     {
-        //Appear Death Text
-        deathTexts[index].DOTMPScale(1, appearDeathTextTime);
-        yield return new WaitForSeconds(1f);
-        deathTexts[index].DOTMPScale(0, disappearDeathTextTime);
+        if (!deathTextOn)
+        {
+            deathTextOn = true;
+            //Appear Death Text
+            deathTexts[index].DOTMPScale(1, appearDeathTextTime);
+            yield return new WaitForSeconds(1f);
+            deathTexts[index].DOTMPScale(0, disappearDeathTextTime);
+            deathTextOn = false;
+        }
     }
 }
