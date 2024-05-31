@@ -124,7 +124,7 @@ public class KeyManager : MonoBehaviour
         
             if (keyList.Count == 1 && !canPlayLevel)
             {
-                _sceneUIBetween.StartCoroutine(_sceneUIBetween.DeathTextEvent(2));
+                _sceneUIBetween.StartCoroutine(_sceneUIBetween.DeathTextEvent(4));
                 SceneManager.LoadScene(loadCurrentLevel);
                 Debug.Log("Wrong starting key pressed : GAME OVER");
             }
@@ -428,6 +428,7 @@ public class KeyManager : MonoBehaviour
             if (blinkKeys[i].isPressed)
             {
                 yield return new WaitForSeconds(2f);
+                _sceneUIBetween.StartCoroutine(_sceneUIBetween.DeathTextEvent(3));
                 SceneManager.LoadScene(loadCurrentLevel);
             }
             
