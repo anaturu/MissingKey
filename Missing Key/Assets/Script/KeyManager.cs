@@ -22,6 +22,7 @@ public class KeyManager : MonoBehaviour
     public static KeyManager instance;
     private UIManager _uiManager;
     private LevelManager _levelManager;
+    private SceneUIBetween _sceneUIBetween;
 
     [SerializeField] private List<KeyData> keyList = new List<KeyData>();
     [SerializeField] private List<KeyData> mineKeys = new List<KeyData>();
@@ -64,6 +65,9 @@ public class KeyManager : MonoBehaviour
         mineIsActive = false;
         _uiManager = UIManager.instance;
         _levelManager = LevelManager.instance;
+        _sceneUIBetween = SceneUIBetween.instance;
+        
+        _sceneUIBetween.UpdateText();
         
         for (int i = 0; i < _keyDatas.Length; i++)
         {
@@ -106,24 +110,28 @@ public class KeyManager : MonoBehaviour
         {
             if (keyList.Count > 2 && keyList[0].keyStatus != KeyData.KeyStatus.Mine)
             {
+                _sceneUIBetween.StartCoroutine(_sceneUIBetween.DeathTextEvent(0));
                 SceneManager.LoadScene(loadCurrentLevel);
                 Debug.Log("More than 2 keys : GAME OVER");
             }
 
             if (keyList.Count == 0 && canPlayLevel)
             {
+                _sceneUIBetween.StartCoroutine(_sceneUIBetween.DeathTextEvent(1));
                 SceneManager.LoadScene(loadCurrentLevel);
                 Debug.Log("0 keys held down : GAME OVER");
             }
         
             if (keyList.Count == 1 && !canPlayLevel)
             {
+                _sceneUIBetween.StartCoroutine(_sceneUIBetween.DeathTextEvent(2));
                 SceneManager.LoadScene(loadCurrentLevel);
                 Debug.Log("Wrong starting key pressed : GAME OVER");
             }
 
             if (currentKey.isPressed && currentKey.isBlinking)
             {
+                _sceneUIBetween.StartCoroutine(_sceneUIBetween.DeathTextEvent(3));
                 SceneManager.LoadScene(loadCurrentLevel);
                 Debug.Log("GAME OVER : Blink to the death");
             }
@@ -201,6 +209,7 @@ public class KeyManager : MonoBehaviour
                     }
                     else
                     {
+                        _sceneUIBetween.StartCoroutine(_sceneUIBetween.DeathTextEvent(4));
                         SceneManager.LoadScene(loadCurrentLevel);
                         Debug.Log("Wrong starting key pressed : GAME OVER");
                     }
@@ -229,6 +238,7 @@ public class KeyManager : MonoBehaviour
                 }
                 else
                 {
+                    _sceneUIBetween.StartCoroutine(_sceneUIBetween.DeathTextEvent(2));
                     SceneManager.LoadScene(loadCurrentLevel);
                     Debug.Log("Pressed key is not adjacent : GAME OVER");
                 }
@@ -308,6 +318,21 @@ public class KeyManager : MonoBehaviour
             }
             #endregion
         }
+    }
+
+    private IEnumerator TooMuchKeyDefeat()
+    {
+        KeyData currentKey = ReturnKeyDataFromInput(FindLastPressedInput());
+        
+        Debug.Log("1");
+        for (int i = 0; i < keyList.Count; i++)
+        {
+            keyList[i].transform.DOMove(currentKey.keyPos + new Vector3(0, 0.4f, 0), travelSpeed);
+            Debug.Log("2");
+        }
+        yield return new WaitForSeconds(2f);
+        Debug.Log("3");
+        //SceneManager.LoadScene(loadCurrentLevel);
     }
     private IEnumerator MineEvent()
     {
