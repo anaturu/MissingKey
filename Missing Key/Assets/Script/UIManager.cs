@@ -72,15 +72,15 @@ public class UIManager : MonoBehaviour
             {
                 if (isPaused) //Si le menu Pause est ouvert
                 {
-                    ButtonResumeGame(); //Ferme le menu Pause
+                    ResumeGame(); //Ferme le menu Pause
                 }
                 else if (!isPaused) //Si le menu Pause est fermé
                 {
-                    PauseGame(); //Ouvre le menu Pause
+                    PauseMenu(); //Ouvre le menu Pause
                 }
             } 
         }
-
+        
         if (isLevelSelector) //Si le menu LevelSelector est ouvert
         {
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -91,12 +91,25 @@ public class UIManager : MonoBehaviour
                 }
                 else //Si le menu Pause est ouvert
                 {
-                    ButtonResumeGame();
+                    ResumeGame();
                 }
             }
         }
     }
-    
+    public void ResumeGame()
+    {
+        pauseMenu.SetActive(false); //Désactive Menu Pause
+        Time.timeScale = 1f;
+
+        isPaused = false;
+    }
+    public void PauseMenu()
+    {
+        pauseMenu.SetActive(true); //Active Menu Pause
+        Debug.Log("PAUSE");
+        
+        isPaused = true;
+    }
     void DisplayTime(float timeToDisplay)
     {
         timeToDisplay += 1;
@@ -107,13 +120,6 @@ public class UIManager : MonoBehaviour
         timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
     
-    public void ButtonResumeGame()
-    {
-        pauseMenu.SetActive(false); //Désactive Menu Pause
-        Time.timeScale = 1f;
-
-        isPaused = false;
-    }
     
     public void ButtonOptionsMenu()
     {
@@ -123,15 +129,6 @@ public class UIManager : MonoBehaviour
         isPaused = false;
         
         SceneManager.LoadScene("Level Selector");
-    }
-
-    
-    public void PauseGame()
-    {
-        pauseMenu.SetActive(true); //Active Menu Pause
-        Debug.Log("PAUSE");
-        
-        isPaused = true;
     }
     public void ButtonBack()
     {
