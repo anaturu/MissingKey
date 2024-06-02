@@ -311,7 +311,7 @@ public class KeyManager : MonoBehaviour
                 case KeyData.KeyStatus.Start:
                     keyList.Remove(currentKey.GetComponent<KeyData>());
                     currentKey.keyStatus = KeyData.KeyStatus.Basic;
-                    currentKey.GetComponent<MeshRenderer>().material = basicMat;
+                    //currentKey.GetComponent<MeshRenderer>().material = basicMat;
                     break;
                 case KeyData.KeyStatus.Mine:
                     keyList.Remove(currentKey.GetComponent<KeyData>());

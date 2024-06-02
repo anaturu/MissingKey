@@ -294,7 +294,7 @@ PrefabInstance:
     - target: {fileID: 5353560497056052807, guid: af8014c5b6c8f734399c0021dde33f49,
         type: 3}
       propertyPath: timeRemaining
-      value: 15
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6466135283355682480, guid: af8014c5b6c8f734399c0021dde33f49,
         type: 3}
@@ -809,7 +809,7 @@ PrefabInstance:
     - target: {fileID: 4200751794741831323, guid: 9b9ed2e724a86594a85c70f7b7cf196e,
         type: 3}
       propertyPath: timerLevel
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4200751794741831323, guid: 9b9ed2e724a86594a85c70f7b7cf196e,
         type: 3}
