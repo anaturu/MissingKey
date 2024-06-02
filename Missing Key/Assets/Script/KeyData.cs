@@ -34,7 +34,8 @@ public class KeyData : MonoBehaviour
         Teleporter,
         FakeVictory,
         Blink,
-        LoadLevel
+        LoadLevel,
+        PauseKey
     }
 
     private void Start()

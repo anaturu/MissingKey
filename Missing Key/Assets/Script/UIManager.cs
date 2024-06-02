@@ -105,7 +105,6 @@ public class UIManager : MonoBehaviour
     }
     public void PauseMenu()
     {
-        pauseMenu.SetActive(true); //Active Menu Pause
         Debug.Log("PAUSE");
         
         isPaused = true;

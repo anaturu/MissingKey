@@ -46,6 +46,7 @@ public class KeyManager : MonoBehaviour
     [SerializeField] private bool blinkLevel;
     [SerializeField] private bool blinkLevelAllAtOnce;
     [SerializeField] private bool levelSelectorScene;
+    [SerializeField] private bool isPaused;
 
     [SerializeField] private Material fakeVictoryMat;
     [SerializeField] private Material basicMat;
@@ -223,6 +224,10 @@ public class KeyManager : MonoBehaviour
                     keyList.Add(currentKey.GetComponent<KeyData>());
                     StartCoroutine(LoadingLevelEvent());
                     break;
+                case KeyData.KeyStatus.PauseKey:
+                    keyList.Add(currentKey.GetComponent<KeyData>());
+                    StartCoroutine(MenuPauseEvent());
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -316,11 +321,67 @@ public class KeyManager : MonoBehaviour
                 case KeyData.KeyStatus.LoadLevel:
                     keyList.Remove(currentKey.GetComponent<KeyData>());
                     break;
+                case KeyData.KeyStatus.PauseKey:
+                    keyList.Remove(currentKey.GetComponent<KeyData>());
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
             #endregion
         }
+    }
+
+    private IEnumerator MenuPauseEvent()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (isPaused) //Si le menu Pause est ouvert
+            {
+                //KEYBOARD DISAPPEARS
+                for (int i = 0; i < _keyDatas.Length - 1; i++)
+                {
+                    _keyDatas[i].gameObject.SetActive(true);
+                }
+                
+                for (int i = 0; i < _keyDatas.Length - 1; i++)
+                {
+                    _keyDatas[i].transform.DOScale(Vector3.one, Random.Range(0.5f, 1f)).SetEase(Ease.InBounce);
+                }
+                
+                Debug.Log("RESUME GAME");
+                isPaused = false;
+            }
+            else if (!isPaused) //Si le menu Pause est fermé
+            {
+                //KEYBOARD DISAPPEARS
+                for (int i = 0; i < _keyDatas.Length - 1; i++)
+                {
+                    _keyDatas[i].transform.DOScale(Vector3.zero, Random.Range(0.5f, 1f)).SetEase(Ease.InBounce);
+                }
+                yield return new WaitForSeconds(1f);
+                for (int i = 0; i < _keyDatas.Length - 1; i++)
+                {
+                    _keyDatas[i].gameObject.SetActive(false);
+                }
+                
+                Debug.Log("PAUSE");
+                isPaused = true;
+            }
+        }
+        
+        
+    }
+    
+    public void PauseMenu()
+    {
+       
+        
+        
+    }
+    
+    public void ResumeGame()
+    {
+        
     }
     private IEnumerator MineEvent()
     {
@@ -381,28 +442,24 @@ public class KeyManager : MonoBehaviour
     {
         KeyData currentKey = ReturnKeyDataFromInput(FindLastPressedInput());
         
-        Debug.Log("1");
         //Freeze la touche de victoire pressé sur sa position
         if (keyList[0].isPressed) //Si l'index actuel est pressé
         {
             //Tween sur la victory key
             keyList[0].transform.DORotate(new Vector3(0, 360, 0), 0.3f, RotateMode.FastBeyond360);
-            Debug.Log("TWEEN ROTATE");
         }
         Debug.Log(Time.timeScale);
         yield return new WaitForSeconds(0.2f);
-        Debug.Log("2");
+        
         //Make all keys disappear
         for (int i = 0; i < _keyDatas.Length; i++)
         {
             _keyDatas[i].transform.DOScale(Vector3.zero, Random.Range(0.5f, 1f)).SetEase(Ease.InBounce);
-            Debug.Log("TWEEN SCALE");
-
         }
         yield return new WaitForSeconds(1f);
+        
         instance = null;
         SceneManager.LoadScene(currentKey.levelToLoad);
-        Debug.Log("3");
 
     }
     private IEnumerator BlinkEvent()
