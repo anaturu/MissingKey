@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
@@ -10,10 +12,8 @@ public class LevelManager : MonoBehaviour
     private KeyManager keyManager;
     public bool[] levelIsCompleted;
     public Material matCompletedColor;
-    public Material matUncompletedColor;
-    public Color completedColor;
-    public Color uncompletedColor;
-    
+    public String levelToRemember;
+
     private void Awake()
     {
         #region Singleton
@@ -40,6 +40,9 @@ public class LevelManager : MonoBehaviour
             }
         }
     }
-    
-    
+
+    public void ResumeCurrentLevel()
+    {
+        SceneManager.LoadScene(levelToRemember);
+    }
 }

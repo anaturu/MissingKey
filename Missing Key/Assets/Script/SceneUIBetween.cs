@@ -45,7 +45,7 @@ public class SceneUIBetween : MonoBehaviour
             deathTextOn = true;
             //Appear Death Text
             deathTexts[index].DOTMPScale(1, appearDeathTextTime);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(2f);
             deathTexts[index].DOTMPScale(0, disappearDeathTextTime);
             deathTextOn = false;
         }

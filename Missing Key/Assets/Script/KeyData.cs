@@ -35,7 +35,10 @@ public class KeyData : MonoBehaviour
         FakeVictory,
         Blink,
         LoadLevel,
-        PauseKey
+        PauseKey,
+        ResumeKey,
+        LevelSelectorKey,
+        MainMenuKey
     }
 
     private void Start()

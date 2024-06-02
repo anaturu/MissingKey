@@ -67,7 +67,12 @@ public class KeyManager : MonoBehaviour
         _uiManager = UIManager.instance;
         _levelManager = LevelManager.instance;
         _sceneUIBetween = SceneUIBetween.instance;
-        
+
+        if (!isPaused)
+        {
+            _levelManager.levelToRemember = "Level " + currentLevelNumber;
+        }
+
         _sceneUIBetween.UpdateText();
         
         for (int i = 0; i < _keyDatas.Length; i++)
@@ -77,7 +82,7 @@ public class KeyManager : MonoBehaviour
         
         for (int i = 0; i < _keyDatas.Length; i++)
         {
-            _keyDatas[i].transform.DOScale(Vector3.one, Random.Range(0.5f, 1.5f)).SetEase(Ease.OutBounce);
+            _keyDatas[i].transform.DOScale(Vector3.one, Random.Range(0.2f, 0.4f)).SetEase(Ease.OutBounce);
         }
         
         if (blinkLevel)
@@ -225,8 +230,21 @@ public class KeyManager : MonoBehaviour
                     StartCoroutine(LoadingLevelEvent());
                     break;
                 case KeyData.KeyStatus.PauseKey:
+                    canPlayLevel = true;
                     keyList.Add(currentKey.GetComponent<KeyData>());
                     StartCoroutine(MenuPauseEvent());
+                    break;
+                case KeyData.KeyStatus.ResumeKey:
+                    keyList.Add(currentKey.GetComponent<KeyData>());
+                    _levelManager.ResumeCurrentLevel();
+                    break;
+                case KeyData.KeyStatus.LevelSelectorKey:
+                    keyList.Add(currentKey.GetComponent<KeyData>());
+                    SceneManager.LoadScene("Level 99");
+                    break;
+                case KeyData.KeyStatus.MainMenuKey:
+                    keyList.Add(currentKey.GetComponent<KeyData>());
+                    Application.Quit();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -322,7 +340,20 @@ public class KeyManager : MonoBehaviour
                     keyList.Remove(currentKey.GetComponent<KeyData>());
                     break;
                 case KeyData.KeyStatus.PauseKey:
+                    canPlayLevel = false;
                     keyList.Remove(currentKey.GetComponent<KeyData>());
+                    break;
+                case KeyData.KeyStatus.ResumeKey:
+                    keyList.Remove(currentKey.GetComponent<KeyData>());
+                    StartCoroutine(MenuPauseEvent());
+                    break;
+                case KeyData.KeyStatus.LevelSelectorKey:
+                    keyList.Remove(currentKey.GetComponent<KeyData>());
+                    StartCoroutine(MenuPauseEvent());
+                    break;
+                case KeyData.KeyStatus.MainMenuKey:
+                    keyList.Remove(currentKey.GetComponent<KeyData>());
+                    StartCoroutine(MenuPauseEvent());
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -337,7 +368,7 @@ public class KeyManager : MonoBehaviour
         {
             if (isPaused) //Si le menu Pause est ouvert
             {
-                //KEYBOARD DISAPPEARS
+                //KEYBOARD APPEARS
                 for (int i = 0; i < _keyDatas.Length - 1; i++)
                 {
                     _keyDatas[i].gameObject.SetActive(true);
@@ -345,27 +376,23 @@ public class KeyManager : MonoBehaviour
                 
                 for (int i = 0; i < _keyDatas.Length - 1; i++)
                 {
-                    _keyDatas[i].transform.DOScale(Vector3.one, Random.Range(0.5f, 1f)).SetEase(Ease.InBounce);
+                    _keyDatas[i].transform.DOScale(Vector3.one, Random.Range(0.2f, 0.4f)).SetEase(Ease.OutBounce);
                 }
-                
-                Debug.Log("RESUME GAME");
-                isPaused = false;
             }
             else if (!isPaused) //Si le menu Pause est fermé
             {
                 //KEYBOARD DISAPPEARS
                 for (int i = 0; i < _keyDatas.Length - 1; i++)
                 {
-                    _keyDatas[i].transform.DOScale(Vector3.zero, Random.Range(0.5f, 1f)).SetEase(Ease.InBounce);
+                    _keyDatas[i].transform.DOScale(Vector3.zero, 0.3f);
                 }
                 yield return new WaitForSeconds(1f);
+                SceneManager.LoadScene("Pause");
                 for (int i = 0; i < _keyDatas.Length - 1; i++)
                 {
                     _keyDatas[i].gameObject.SetActive(false);
                 }
                 
-                Debug.Log("PAUSE");
-                isPaused = true;
             }
         }
         
@@ -431,7 +458,7 @@ public class KeyManager : MonoBehaviour
         //Make all keys disappear
         for (int i = 0; i < _keyDatas.Length; i++)
         {
-            _keyDatas[i].transform.DOScale(Vector3.zero, Random.Range(0.5f, 1f)).SetEase(Ease.InBounce);
+            _keyDatas[i].transform.DOScale(Vector3.zero, 0.3f);
         }
         yield return new WaitForSeconds(1f);
         SceneManager.LoadScene(loadNextLevel);
@@ -454,7 +481,7 @@ public class KeyManager : MonoBehaviour
         //Make all keys disappear
         for (int i = 0; i < _keyDatas.Length; i++)
         {
-            _keyDatas[i].transform.DOScale(Vector3.zero, Random.Range(0.5f, 1f)).SetEase(Ease.InBounce);
+            _keyDatas[i].transform.DOScale(Vector3.zero, 0.3f);
         }
         yield return new WaitForSeconds(1f);
         

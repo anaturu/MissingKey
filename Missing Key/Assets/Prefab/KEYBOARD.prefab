@@ -7681,7 +7681,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   code: 
-  keyStatus: 0
+  keyStatus: 9
   adjacentKeyDatas: []
   keyPos: {x: 0, y: 0, z: 0}
   tpOutput: {fileID: 0}

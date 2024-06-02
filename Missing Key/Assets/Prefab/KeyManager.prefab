@@ -71,22 +71,25 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
   keyList: []
   mineKeys: []
   fakeVictoryKeys: []
   blinkKeys: []
-  indexMine: 0
   indexFakeVictory: 0
   indexWinEvent: 0
+  currentLevelNumber: 0
   travelSpeed: 0.2
   blinkSpeed: 0
   loadCurrentLevel: 
   loadNextLevel: 
   canPlayLevel: 0
   mineIsActive: 0
-  gameHasBegun: 0
+  timerLevel: 0
   blinkLevel: 0
   blinkLevelAllAtOnce: 0
+  levelSelectorScene: 0
+  isPaused: 0
   fakeVictoryMat: {fileID: 2100000, guid: 28c7ac982453e0841bb8cccdc6389aaa, type: 2}
   basicMat: {fileID: 2100000, guid: 46682a505fca29b48a432cdd2ee68a86, type: 2}
   blinkColor: {r: 1, g: 0.25943398, b: 0.8437611, a: 0}
