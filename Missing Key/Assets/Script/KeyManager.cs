@@ -38,6 +38,7 @@ public class KeyManager : MonoBehaviour
     public float blinkSpeed;
     public string loadCurrentLevel;
     [CanBeNull] public string loadNextLevel;
+    public TextMeshProUGUI levelName;
 
     
     [SerializeField] private bool canPlayLevel;
@@ -67,6 +68,7 @@ public class KeyManager : MonoBehaviour
         _uiManager = UIManager.instance;
         _levelManager = LevelManager.instance;
         _sceneUIBetween = SceneUIBetween.instance;
+        levelName = GameObject.Find("LevelName").GetComponent<TextMeshProUGUI>();
 
         if (!isPaused)
         {
@@ -386,6 +388,8 @@ public class KeyManager : MonoBehaviour
                 {
                     _keyDatas[i].transform.DOScale(Vector3.zero, 0.3f);
                 }
+                levelName.DOTMPScale(0, 0.3f);
+
                 yield return new WaitForSeconds(1f);
                 SceneManager.LoadScene("Pause");
                 for (int i = 0; i < _keyDatas.Length - 1; i++)
@@ -454,12 +458,13 @@ public class KeyManager : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         _levelManager.levelIsCompleted[currentLevelNumber - 1] = true;
         
-        
         //Make all keys disappear
         for (int i = 0; i < _keyDatas.Length; i++)
         {
             _keyDatas[i].transform.DOScale(Vector3.zero, 0.3f);
         }
+
+        levelName.DOTMPScale(0, 0.3f);
         yield return new WaitForSeconds(1f);
         SceneManager.LoadScene(loadNextLevel);
         Debug.Log("LEVEL IS COMPLETED !");
