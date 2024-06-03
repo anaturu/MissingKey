@@ -402,18 +402,6 @@ public class KeyManager : MonoBehaviour
         
         
     }
-    
-    public void PauseMenu()
-    {
-       
-        
-        
-    }
-    
-    public void ResumeGame()
-    {
-        
-    }
     private IEnumerator MineEvent()
     {
         KeyData currentKey = ReturnKeyDataFromInput(FindLastPressedInput());
