@@ -38,7 +38,8 @@ public class KeyData : MonoBehaviour
         PauseKey,
         ResumeKey,
         LevelSelectorKey,
-        MainMenuKey
+        MainMenuKey,
+        CreditMenu
     }
 
     private void Start()

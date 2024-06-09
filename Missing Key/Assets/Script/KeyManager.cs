@@ -244,6 +244,10 @@ public class KeyManager : MonoBehaviour
                     keyList.Add(currentKey.GetComponent<KeyData>());
                     SceneManager.LoadScene("Level 99");
                     break;
+                case KeyData.KeyStatus.CreditMenu:
+                    keyList.Remove(currentKey.GetComponent<KeyData>());
+                    SceneManager.LoadScene("Credit");
+                    break;
                 case KeyData.KeyStatus.MainMenuKey:
                     keyList.Add(currentKey.GetComponent<KeyData>());
                     Application.Quit();
@@ -352,6 +356,9 @@ public class KeyManager : MonoBehaviour
                 case KeyData.KeyStatus.LevelSelectorKey:
                     keyList.Remove(currentKey.GetComponent<KeyData>());
                     StartCoroutine(MenuPauseEvent());
+                    break;
+                case KeyData.KeyStatus.CreditMenu:
+                    keyList.Remove(currentKey.GetComponent<KeyData>());
                     break;
                 case KeyData.KeyStatus.MainMenuKey:
                     keyList.Remove(currentKey.GetComponent<KeyData>());
@@ -468,7 +475,6 @@ public class KeyManager : MonoBehaviour
             //Tween sur la victory key
             keyList[0].transform.DORotate(new Vector3(0, 360, 0), 0.3f, RotateMode.FastBeyond360);
         }
-        Debug.Log(Time.timeScale);
         yield return new WaitForSeconds(0.2f);
         
         //Make all keys disappear
