@@ -544,7 +544,7 @@ public class KeyManager : MonoBehaviour
             key.gameObject.GetComponent<MeshRenderer>().material = basicMat;
             key.keyStatus = KeyData.KeyStatus.Basic;
         }
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.5f);
         
         
         StartCoroutine(BlinkEventAllAtOnce());
